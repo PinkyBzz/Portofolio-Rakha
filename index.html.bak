@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Portfolio — Muhammad Rakha</title>
+		<meta name="description" content="Portfolio elegan & responsif milik Muhammad Rakha — Siswa SMKN 40 Jakarta, peraih prestasi Taekwondo & LKS Cyber Security, aktivis OSIS & ketua angkatan." />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<!-- Devicon for technology icons -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+			<header class="site-header">
+							<div class="container header-inner">
+								<a href="#home" class="brand" aria-label="Beranda">
+									<img class="brand-avatar" src="M. Rakha.jpg" alt="Foto profil Muhammad Rakha" />
+									<span>Muhammad Rakha</span>
+								</a>
+					<button class="menu-toggle" type="button" aria-label="Menu" aria-controls="site-nav" aria-expanded="false">
+						<span></span><span></span><span></span>
+					</button>
+					<nav id="site-nav" class="nav">
+					<a href="#about">Tentang</a>
+					<a href="#education">Pendidikan</a>
+					<a href="#achievements">Prestasi</a>
+						<a href="#gallery">Galeri</a>
+					<a href="#skills">Keahlian</a>
+					<a href="#contact">Kontak</a>
+				</nav>
+			</div>
+		</header>
+
+		<main id="home">
+			<!-- Hero -->
+					<section class="section hero">
+						<div class="container grid-2">
+										<div class="hero-text reveal">
+								<p class="eyebrow">Portfolio</p>
+								<h1 class="display-name">Muhammad Rakha</h1>
+								<p class="tagline">Siswa SMKN 40 Jakarta • Cyber Security Enthusiast • Developer</p>
+								<p class="lead typewriter" data-type-speed="22" data-start-delay="250">
+									Saya berfokus pada pengembangan aplikasi yang aman, sederhana, dan bermanfaat. 
+									Saya senang bekerja dalam tim, menyusun strategi, dan mengeksekusi rencana secara disiplin untuk mencapai hasil yang terukur.
+								</p>
+								<div class="hero-cta">
+									<a class="btn" href="#contact">Hubungi Saya</a>
+									<a class="btn ghost" href="#achievements">Lihat Prestasi</a>
+								</div>
+											<div class="badge-grid">
+												<div class="badge">Cyber Security</div>
+												<div class="badge">Public Speaking</div>
+												<div class="badge">Programming</div>
+												<div class="badge">Leadership</div>
+											</div>
+							</div>
+										<div class="hero-media reveal">
+											<div class="hero-avatar">
+												<img src="M. Rakha.jpg" alt="Foto Muhammad Rakha" loading="lazy" decoding="async" />
+											</div>
+										</div>
+						</div>
+					</section>
+
+			<!-- Tentang -->
+			<section id="about" class="section">
+				<div class="container reveal">
+					<h2 class="section-title">Tentang Saya</h2>
+							<p>
+								Saya Muhammad Rakha, seorang pembelajar yang senang mengurai masalah kompleks menjadi solusi yang terstruktur dan mudah dipahami. 
+								Perjalanan saya dimulai dari <strong>SD Perguruan Rakyat 3</strong>, berlanjut ke <strong>SMPN 97</strong>, dan kini saya aktif di <strong>SMKN 40 Jakarta</strong>.
+								Saya terlibat dalam organisasi, kompetisi, dan program pertukaran pelajar untuk memperluas wawasan dan jaringan.
+							</p>
+							<p>
+								Di bidang <strong>keamanan siber</strong>, saya menikmati tantangan menganalisis risiko, memperkuat pertahanan, dan menerapkan praktik terbaik security-by-design. 
+								Saya juga membangun aplikasi menggunakan <strong>C#, PHP/Laravel,</strong> serta <strong>Dart/Flutter</strong> untuk mewujudkan ide menjadi produk yang nyata.
+							</p>
+							<p>
+								Di luar teknologi, saya menyalurkan kreativitas melalui musik — terutama <strong>gitar</strong> dan <strong>drum</strong>. 
+								Musik mengajarkan ritme, kerja tim, dan konsistensi — nilai yang saya bawa ke setiap proyek yang saya kerjakan.
+							</p>
+				</div>
+			</section>
+
+			<!-- Galeri -->
+			<section id="gallery" class="section">
+				<div class="container reveal">
+					<h2 class="section-title">Galeri</h2>
+					<div class="gallery-grid">
+						<figure class="gallery-item">
+							<img src="wilayah.jpeg" alt="LKS Cyber Security tingkat wilayah" loading="lazy" decoding="async" />
+							<figcaption>Juara Wilayah — LKS Cyber Security</figcaption>
+						</figure>
+						<figure class="gallery-item">
+							<img src="provinsi.jpeg" alt="LKS Cyber Security tingkat provinsi" loading="lazy" decoding="async" />
+							<figcaption>Juara Provinsi — LKS Cyber Security</figcaption>
+						</figure>
+						<figure class="gallery-item">
+							<img src="nasional.jpeg" alt="LKS Cyber Security tingkat nasional" loading="lazy" decoding="async" />
+							<figcaption>Medali Perunggu Nasional — LKS Cyber Security</figcaption>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<!-- Pendidikan -->
+			<section id="education" class="section">
+				<div class="container reveal">
+					<h2 class="section-title">Pendidikan</h2>
+					<div class="timeline">
+						<div class="timeline-item">
+							<div class="time">SD</div>
+							<div class="content">
+								<h3>SD Perguruan Rakyat 3</h3>
+							<p>Tempat saya membangun pondasi karakter, disiplin, dan rasa ingin tahu yang tinggi terhadap hal-hal baru.</p>
+							</div>
+						</div>
+						<div class="timeline-item">
+							<div class="time">SMP</div>
+							<div class="content">
+								<h3>SMPN 97</h3>
+							<p>Mulai belajar bekerja dalam tim, dan mencoba berbagai kompetisi untuk melatih mental bertanding.</p>
+							</div>
+						</div>
+						<div class="timeline-item">
+							<div class="time">SMK</div>
+							<div class="content">
+								<h3>SMKN 40 Jakarta</h3>
+							<p>Saat ini menjadi siswa aktif, dipercaya sebagai <strong>ketua angkatan</strong> dan <strong>pengurus OSIS (Hubungan Masyarakat)</strong>, sekaligus mewakili sekolah pada berbagai ajang akademik dan non-akademik.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Prestasi -->
+			<section id="achievements" class="section">
+				<div class="container">
+					<h2 class="section-title reveal">Prestasi & Pengalaman</h2>
+								<div class="cards">
+						<article class="card reveal">
+							<h3>Everest Taekwondo Championship 2023</h3>
+										<p>Peraih Medali Perak. Taekwondo melatih fokus, sportivitas, dan ketangguhan mental — kualitas yang saya bawa ke ranah akademik dan proyek teknologi.</p>
+						</article>
+						<article class="card reveal">
+							<h3>Lomba Kompetensi Siswa (LKS) — Cyber Security</h3>
+							<ul>
+											<li>Juara 1 tingkat wilayah & provinsi.</li>
+											<li>Medali Perunggu tingkat nasional.</li>
+							</ul>
+										<p class="muted small">Kompetisi berfokus pada analisis kerentanan, hardening, dan praktik incident response. Pengalaman ini menguatkan dasar teknis dan pola pikir defensif saya.</p>
+						</article>
+						<article class="card reveal">
+							<h3>Jak Bee Business Plan</h3>
+										<p>Finalis tahun 2024 dan 2025. Saya belajar memvalidasi ide, menyusun model bisnis, dan menyampaikan presentasi yang persuasif kepada juri dan audiens.</p>
+						</article>
+						<article class="card reveal">
+							<h3>Student Exchange 2025</h3>
+										<p>Mewakili sekolah pada program pertukaran pelajar bersama mahasiswa dari Singapura. Saya memperluas perspektif lintas budaya dan meningkatkan kemampuan komunikasi dalam kolaborasi internasional.</p>
+						</article>
+						<article class="card reveal">
+							<h3>Duta GenRe 2025</h3>
+										<p>Finalis Duta GenRe. Kesempatan ini melatih saya untuk menjadi role model, menyuarakan kampanye positif, dan berinteraksi dengan komunitas secara empatik.</p>
+						</article>
+						<article class="card reveal">
+							<h3>Organisasi & Kepemimpinan</h3>
+							<ul>
+											<li>Ketua angkatan di SMK: mengoordinasikan program angkatan dan membangun budaya kolaboratif.</li>
+											<li>OSIS — Bidang Hubungan Masyarakat: mengelola komunikasi, publikasi, dan relasi dengan pihak internal/eksternal.</li>
+							</ul>
+						</article>
+					</div>
+				</div>
+			</section>
+
+			<!-- Keahlian -->
+			<section id="skills" class="section">
+				<div class="container reveal">
+					<h2 class="section-title">Keahlian</h2>
+								<div class="grid-2 skills-grid">
+									<div>
+										<h3>Hard Skills</h3>
+										<div class="skill-list">
+											<div class="skill reveal reveal-left" title="C#">
+												<i class="devicon-csharp-plain colored" aria-hidden="true"></i><span>C#</span>
+											</div>
+											<div class="skill reveal reveal-left" title="PHP">
+												<i class="devicon-php-plain colored" aria-hidden="true"></i><span>PHP</span>
+											</div>
+											<div class="skill reveal reveal-left" title="Laravel">
+												<i class="devicon-laravel-plain colored" aria-hidden="true"></i><span>Laravel</span>
+											</div>
+											<div class="skill reveal reveal-left" title="Dart">
+												<i class="devicon-dart-plain colored" aria-hidden="true"></i><span>Dart</span>
+											</div>
+											<div class="skill reveal reveal-left" title="Flutter">
+												<i class="devicon-flutter-plain colored" aria-hidden="true"></i><span>Flutter</span>
+											</div>
+											<div class="skill reveal reveal-left" title="Cyber Security">
+												<svg aria-hidden="true" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+													<path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"></path>
+													<path d="M9 12l2 2 4-4"></path>
+												</svg>
+												<span>Cyber Security</span>
+											</div>
+																		<div class="skill reveal reveal-left" title="English">
+																							<svg aria-hidden="true" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+																								<circle cx="12" cy="12" r="9"></circle>
+																								<path d="M2.5 12h19M12 2.5v19"></path>
+																							</svg>
+																							<span>English</span>
+																						</div>
+																		<div class="skill reveal reveal-left" title="Photography & Videography">
+																							<svg aria-hidden="true" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+																								<path d="M4 7h4l2-2h4l2 2h4v10H4z"></path>
+																								<circle cx="12" cy="12" r="3.5"></circle>
+																							</svg>
+																							<span>Photography & Videography</span>
+																						</div>
+										</div>
+									</div>
+									<div>
+										<h3>Soft Skills</h3>
+										<ul class="bullets">
+											<li><strong>Komunikasi jelas:</strong> menyampaikan ide teknis dengan bahasa yang mudah dipahami.</li>
+											<li><strong>Public speaking:</strong> percaya diri saat presentasi dan diskusi panel.</li>
+											<li><strong>Time management:</strong> menyusun prioritas dan timeline yang realistis.</li>
+											<li><strong>Kepemimpinan:</strong> memfasilitasi kolaborasi tim dan pengambilan keputusan.</li>
+										</ul>
+									</div>
+								</div>
+				</div>
+			</section>
+
+			<!-- Hobi -->
+			<section class="section">
+				<div class="container reveal">
+					<h2 class="section-title">Hobi</h2>
+							<p>Saya suka bermain alat musik, terutama <strong>gitar</strong> dan <strong>drum</strong>. 
+								Musik membantu saya menjaga fokus, ritme kerja, dan kreativitas — tiga hal yang penting dalam menyelesaikan proyek teknologi yang berkualitas. 
+								Selain itu, saya juga <strong>fasih berbahasa Inggris</strong> untuk komunikasi sehari-hari maupun presentasi teknis, dan memiliki ketertarikan pada <strong>fotografi</strong> serta <strong>videografi</strong> untuk mengabadikan momen dan bercerita melalui visual.</p>
+				</div>
+			</section>
+
+			<!-- Kontak -->
+					<section id="contact" class="section">
+						<div class="container reveal">
+							<h2 class="section-title">Kontak</h2>
+							<p>Saya terbuka untuk kolaborasi, proyek, atau diskusi. Pilih kanal favorit Anda:</p>
+							<div class="contact-cards">
+								<a class="contact-card" href="mailto:rakhamuhammad191@gmail.com" aria-label="Email ke rakhamuhammad191@gmail.com">
+									<div class="icon mail" aria-hidden="true">✉️</div>
+									<div>
+										<div class="contact-label">Email</div>
+										<div class="contact-value">rakhamuhammad191@gmail.com</div>
+									</div>
+								</a>
+								<a class="contact-card" href="tel:082211599226" aria-label="Telepon 082211599226">
+									<div class="icon phone" aria-hidden="true">📞</div>
+									<div>
+										<div class="contact-label">Telepon</div>
+										<div class="contact-value">0822-1159-9226</div>
+									</div>
+								</a>
+								<a class="contact-card" href="https://instagram.com/rakhakesatu" target="_blank" rel="noopener" aria-label="Instagram @rakhakesatu">
+									<div class="icon ig" aria-hidden="true">📷</div>
+									<div>
+										<div class="contact-label">Instagram</div>
+										<div class="contact-value">@rakhakesatu</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</section>
+		</main>
+
+		<!-- Kreatif & Startup -->
+		<section class="section" id="creative">
+			<div class="container reveal">
+			<h2 class="section-title">TimelessProject</h2>
+			<div class="creative-grid">
+					<article class="creative-card creative-brand">
+						<img class="brand-logo" src="timelessbackground.jpeg" alt="Logo TimelessProject" />
+						<div>
+							<h3>TimelessProject — Industri Kreatif</h3>
+							<p>Startup yang saya dirikan di bidang industri kreatif, fokus pada konten visual dan kolaborasi komunitas. Kami menggabungkan estetika dan dampak agar karya tetap relevan dan berkesan.</p>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		</main>
+
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<span>© <span id="year"></span> Muhammad Rakha</span>
+				<a href="#home" class="back-to-top">Kembali ke atas ↑</a>
+			</div>
+		</footer>
+
+		<script src="script.js"></script>
+
+		<!-- Lightbox overlay -->
+		<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
+			<button class="lightbox-close" aria-label="Tutup">×</button>
+			<img class="lightbox-img" alt="Pratinjau gambar" />
+		</div>
+	</body>
+	</html>
+
