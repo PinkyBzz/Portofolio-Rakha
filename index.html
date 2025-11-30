@@ -159,9 +159,80 @@
                 backdrop-filter: blur(2px);
             }
         }
+
+        /* Intro Overlay */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+        #intro-terminal {
+            flex-grow: 1;
+            color: #0f0;
+            font-size: 14px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 5px #0f0;
+        }
+        .breach-alert {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 0, 0, 0.9);
+            border: 2px solid #f00;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5), inset 0 0 20px rgba(255, 0, 0, 0.2);
+            display: none;
+            z-index: 10000;
+            max-width: 90%;
+        }
+        .fix-btn {
+            background: #f00;
+            color: #fff;
+            border: none;
+            padding: 1rem 3rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            animation: pulse-red 1s infinite;
+        }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+        }
+        .fix-btn:hover {
+            background: #fff;
+            color: #f00;
+            box-shadow: 0 0 30px #f00;
+        }
     </style>
 </head>
-<body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative">
+<body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative overflow-hidden">
+    <!-- Intro Overlay -->
+    <div id="intro-overlay">
+        <div id="intro-terminal"></div>
+        <div id="breach-alert" class="breach-alert">
+            <h1 class="text-4xl md:text-6xl font-bold text-red-500 mb-4 tracking-tighter">⚠️ SYSTEM BREACHED ⚠️</h1>
+            <p class="text-red-300 text-lg md:text-xl mb-8 font-mono">UNAUTHORIZED ACCESS DETECTED.<br>YOUR IP HAS BEEN LOGGED.<br>DATA EXFILTRATION IN PROGRESS...</p>
+            <button id="fix-btn" class="fix-btn">FIX IT NOW</button>
+        </div>
+    </div>
+
     <!-- Vanta Background -->
     <div id="vanta-bg" class="fixed inset-0 -z-10 opacity-30 pointer-events-none"></div>
 
@@ -217,7 +288,7 @@
                 
                 <div class="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0 group">
                     <!-- 3D Object Container -->
-                    <div id="hero-3d" class="absolute inset-[-50px] -z-10 opacity-60 transition-opacity duration-500 group-hover:opacity-100"></div>
+                    <div id="hero-3d" class="absolute inset-[-100px] z-0 opacity-100 pointer-events-none"></div>
                     
                     <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-2xl hidden"></div>
                     <img src="M. Rakha.jpg" alt="Muhammad Rakha" class="relative w-full h-full object-cover rounded-full border-2 border-white/10 shadow-2xl z-10">
@@ -524,8 +595,88 @@
                 }
             }
             
-            // Start typing after a small delay
-            setTimeout(typeWriter, 500);
+            // Intro Sequence Logic
+            const introOverlay = document.getElementById('intro-overlay');
+            const introTerminal = document.getElementById('intro-terminal');
+            const breachAlert = document.getElementById('breach-alert');
+            const fixBtn = document.getElementById('fix-btn');
+            
+            // Alert Sound
+            const alertSound = new Audio('alert-369027.mp3');
+            alertSound.loop = true;
+
+            const breachLogs = [
+                "Connecting to target...",
+                "Bypassing firewall...",
+                "Injecting SQL payload...",
+                "Root access: GRANTED",
+                "Downloading private_photos.zip...",
+                "Installing keylogger...",
+                "Overheating CPU...",
+                "CRITICAL ERROR: SYSTEM COMPROMISED"
+            ];
+
+            const fixLogs = [
+                "Initiating counter-measures...",
+                "Isolating malware...",
+                "Patching kernel vulnerability...",
+                "Restoring firewall...",
+                "Encrypting data stream...",
+                "System secure.",
+                "Redirecting to safe environment..."
+            ];
+
+            async function typeLog(text, color = '#0f0', speed = 50) {
+                const p = document.createElement('div');
+                p.style.color = color;
+                p.textContent = '> ' + text;
+                introTerminal.appendChild(p);
+                introTerminal.scrollTop = introTerminal.scrollHeight;
+                await new Promise(r => setTimeout(r, speed));
+            }
+
+            async function runIntro() {
+                // Phase 1: Breach
+                for (const log of breachLogs) {
+                    await typeLog(log, '#0f0', 300);
+                }
+                
+                // Show Alert
+                breachAlert.style.display = 'block';
+                try {
+                    await alertSound.play();
+                } catch (err) {
+                    console.log("Autoplay prevented:", err);
+                }
+                
+                // Wait for user interaction
+                fixBtn.addEventListener('click', async () => {
+                    alertSound.pause();
+                    alertSound.currentTime = 0;
+                    breachAlert.style.display = 'none';
+                    
+                    // Phase 2: Fix
+                    for (const log of fixLogs) {
+                        await typeLog(log, '#3b82f6', 400); // Blue text for fixing
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 1000));
+                    
+                    // Phase 3: Reveal
+                    introOverlay.style.transition = 'opacity 1s';
+                    introOverlay.style.opacity = '0';
+                    document.body.classList.remove('overflow-hidden'); // Enable scrolling
+                    
+                    setTimeout(() => {
+                        introOverlay.remove();
+                        // Start main site animations
+                        setTimeout(typeWriter, 500);
+                    }, 1000);
+                });
+            }
+
+            // Start Intro
+            runIntro();
 
             // Scroll Reveal Logic
             const observerOptions = {
@@ -639,15 +790,25 @@
                 const container = document.getElementById('hero-3d');
                 if (!container) return;
 
+                // Ensure container has dimensions
+                let width = container.clientWidth;
+                let height = container.clientHeight;
+
+                if (width === 0 || height === 0) {
+                    // Fallback if inset hasn't calculated yet
+                    width = 350; 
+                    height = 350;
+                }
+
                 const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
                 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
                 
-                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setSize(width, height);
                 container.appendChild(renderer.domElement);
 
                 // Create Geometry (Icosahedron - Cyber Core)
-                const geometry = new THREE.IcosahedronGeometry(2.5, 0);
+                const geometry = new THREE.IcosahedronGeometry(4.0, 0);
                 const material = new THREE.MeshBasicMaterial({ 
                     color: 0x10b981, 
                     wireframe: true,
@@ -658,7 +819,7 @@
                 scene.add(sphere);
 
                 // Inner Core
-                const innerGeo = new THREE.IcosahedronGeometry(1.5, 1);
+                const innerGeo = new THREE.IcosahedronGeometry(2.5, 1);
                 const innerMat = new THREE.MeshBasicMaterial({
                     color: 0x3b82f6, // Blue
                     wireframe: true,
@@ -680,20 +841,17 @@
                     innerSphere.rotation.x -= 0.005;
                     innerSphere.rotation.y -= 0.005;
 
-                    // Mouse interaction effect (subtle)
-                    // Note: We can add mouse tracking here if needed
-
                     renderer.render(scene, camera);
                 }
                 animate();
 
                 // Handle Resize
                 window.addEventListener('resize', () => {
-                    if(container.clientWidth > 0 && container.clientHeight > 0) {
-                        camera.aspect = container.clientWidth / container.clientHeight;
-                        camera.updateProjectionMatrix();
-                        renderer.setSize(container.clientWidth, container.clientHeight);
-                    }
+                    const newWidth = container.clientWidth || 350;
+                    const newHeight = container.clientHeight || 350;
+                    camera.aspect = newWidth / newHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newWidth, newHeight);
                 });
             }
             
