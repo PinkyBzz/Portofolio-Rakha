@@ -247,6 +247,9 @@
                 <a href="#achievements" class="text-xs font-medium hover:text-white transition-colors">Prestasi</a>
                 <a href="#skills" class="text-xs font-medium hover:text-white transition-colors">Keahlian</a>
                 <a href="#contact" class="text-xs font-medium hover:text-white transition-colors">Kontak</a>
+                <button id="open-cmd-btn" class="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition-colors flex items-center gap-1 border border-emerald-500/30 px-2 py-1 rounded hover:bg-emerald-500/10">
+                    <i data-lucide="terminal" class="w-3 h-3"></i> CMD
+                </button>
             </div>
         </div>
     </nav>
@@ -602,6 +605,120 @@
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
+            }
+
+            // --- TERMINAL LOGIC ---
+            const cmdOverlay = document.getElementById('cmd-overlay');
+            const openCmdBtn = document.getElementById('open-cmd-btn');
+            const closeCmdBtn = document.getElementById('close-cmd');
+            const closeCmdDot = document.getElementById('close-cmd-dot');
+            const cmdInput = document.getElementById('cmd-input');
+            const cmdOutput = document.getElementById('cmd-output');
+
+            function openTerminal() {
+                cmdOverlay.classList.remove('hidden');
+                // Trigger reflow
+                void cmdOverlay.offsetWidth;
+                cmdOverlay.classList.remove('opacity-0');
+                cmdInput.focus();
+            }
+
+            function closeTerminal() {
+                cmdOverlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    cmdOverlay.classList.add('hidden');
+                }, 300);
+            }
+
+            if (openCmdBtn) openCmdBtn.addEventListener('click', openTerminal);
+            if (closeCmdBtn) closeCmdBtn.addEventListener('click', closeTerminal);
+            if (closeCmdDot) closeCmdDot.addEventListener('click', closeTerminal);
+
+            // Close on background click
+            cmdOverlay.addEventListener('click', (e) => {
+                if (e.target === cmdOverlay) closeTerminal();
+            });
+
+            const commands = {
+                help: "Available commands: help, about, skills, contact, clear, whoami, date, matrix",
+                about: "Muhammad Rakha. Student at SMKN 40 Jakarta. Cyber Security Enthusiast. Musician.",
+                skills: "Languages: PHP, C#, Dart, JS\nTools: Laravel, Flutter, Burp Suite, Nmap",
+                contact: "Email: rakhamuhammad191@gmail.com\nPhone: 0822-1159-9226",
+                whoami: "guest_user@internet",
+                date: new Date().toString(),
+                clear: "CLEAR",
+                matrix: "MATRIX_EFFECT"
+            };
+
+            cmdInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const input = cmdInput.value.trim().toLowerCase();
+                    if (input) {
+                        // Add input line
+                        const inputLine = document.createElement('div');
+                        inputLine.innerHTML = `<span class="text-green-500">➜</span> <span class="text-blue-400">~</span> <span class="text-white">${input}</span>`;
+                        cmdOutput.appendChild(inputLine);
+
+                        // Process command
+                        if (commands[input]) {
+                            if (commands[input] === "CLEAR") {
+                                cmdOutput.innerHTML = '';
+                            } else if (commands[input] === "MATRIX_EFFECT") {
+                                const msg = document.createElement('div');
+                                msg.className = "text-green-400 mb-2";
+                                msg.textContent = "Wake up, Neo...";
+                                cmdOutput.appendChild(msg);
+                                activateMatrixMode();
+                            } else {
+                                const response = document.createElement('div');
+                                response.className = "text-neutral-300 mb-2 whitespace-pre-wrap";
+                                response.textContent = commands[input];
+                                cmdOutput.appendChild(response);
+                            }
+                        } else {
+                            const error = document.createElement('div');
+                            error.className = "text-red-400 mb-2";
+                            error.textContent = `Command not found: ${input}. Type 'help' for list.`;
+                            cmdOutput.appendChild(error);
+                        }
+                        
+                        cmdInput.value = '';
+                        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+                    }
+                }
+            });
+
+            // --- EASTER EGGS ---
+            // 1. Console Message
+            console.log("%c STOP! ", "color: red; font-size: 50px; font-weight: bold; text-shadow: 2px 2px black;");
+            console.log("%c You found the developer tools. If you're looking for bugs, I hope you don't find any! ", "color: #10b981; font-size: 16px;");
+
+            // 2. Konami Code
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        activateMatrixMode();
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+
+            function activateMatrixMode() {
+                alert("SYSTEM OVERRIDE: MATRIX MODE ACTIVATED");
+                document.documentElement.style.filter = "invert(1) hue-rotate(180deg)";
+                document.body.style.fontFamily = "'Courier New', monospace";
+                // Reset after 5 seconds
+                setTimeout(() => {
+                    document.documentElement.style.filter = "none";
+                    document.body.style.fontFamily = "";
+                    alert("SYSTEM RESTORED");
+                }, 5000);
             }
 
             // Typing Effect Logic
@@ -1031,6 +1148,36 @@
 
         <!-- Actual Image -->
         <img id="lightbox-img" src="" alt="Full view" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl border border-white/10 hidden transition-all duration-500 ease-out">
+    </div>
+
+    <!-- Terminal Overlay -->
+    <div id="cmd-overlay" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-3xl bg-[#0c0c0c] border border-green-500/30 rounded-lg shadow-2xl overflow-hidden flex flex-col h-[500px] font-mono text-sm relative">
+            <!-- Header -->
+            <div class="bg-white/5 border-b border-white/5 p-2 flex items-center justify-between select-none">
+                <div class="flex gap-2 px-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/50 hover:bg-red-500 transition-colors cursor-pointer" id="close-cmd-dot"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                </div>
+                <div class="text-neutral-500 text-xs">rakha@portfolio:~</div>
+                <button id="close-cmd" class="text-neutral-500 hover:text-white px-2"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <!-- Content -->
+            <div id="cmd-output" class="flex-1 p-4 overflow-y-auto text-green-400 space-y-1 font-mono text-xs md:text-sm">
+                <div class="mb-4 text-neutral-400">
+                    Welcome to RakhaOS v1.0.0 (Web Terminal)<br>
+                    Type <span class="text-white font-bold">'help'</span> to see available commands.<br>
+                    ----------------------------------------
+                </div>
+            </div>
+            <!-- Input -->
+            <div class="p-4 bg-white/5 border-t border-white/5 flex items-center gap-2">
+                <span class="text-green-500 font-bold">➜</span>
+                <span class="text-blue-400 font-bold">~</span>
+                <input id="cmd-input" type="text" class="bg-transparent border-none outline-none text-white flex-1 font-mono" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
     </div>
 
     <!-- Status Bar -->
