@@ -548,18 +548,18 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-1">
                                 <label class="text-xs font-medium text-neutral-400 ml-1">Nama</label>
-                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors" placeholder="Nama Anda">
+                                <input id="contact-name" type="text" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors" placeholder="Nama Anda">
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-medium text-neutral-400 ml-1">Email</label>
-                                <input type="email" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors" placeholder="email@contoh.com">
+                                <input id="contact-email" type="email" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors" placeholder="email@contoh.com">
                             </div>
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-medium text-neutral-400 ml-1">Pesan</label>
-                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors resize-none" placeholder="Ceritakan tentang proyek Anda..."></textarea>
+                            <textarea id="contact-message" rows="4" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors resize-none" placeholder="Ceritakan tentang proyek Anda..."></textarea>
                         </div>
-                        <button type="button" class="w-full bg-white text-black font-medium py-2 rounded text-sm hover:bg-neutral-200 transition-colors">
+                        <button id="send-whatsapp-btn" type="button" class="w-full bg-white text-black font-medium py-2 rounded text-sm hover:bg-neutral-200 transition-colors">
                             Kirim Pesan
                         </button>
                     </form>
@@ -577,6 +577,28 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // WhatsApp Logic
+            const sendBtn = document.getElementById('send-whatsapp-btn');
+            if (sendBtn) {
+                sendBtn.addEventListener('click', () => {
+                    const name = document.getElementById('contact-name').value;
+                    const email = document.getElementById('contact-email').value;
+                    const message = document.getElementById('contact-message').value;
+
+                    if (!name || !message) {
+                        alert("Mohon isi nama dan pesan terlebih dahulu.");
+                        return;
+                    }
+
+                    const phoneNumber = "6282211599226";
+                    const text = `Halo Rakha, saya ${name} (${email}).\n\n${message}`;
+                    const encodedText = encodeURIComponent(text);
+                    const url = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+
+                    window.open(url, '_blank');
+                });
+            }
+
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
@@ -636,6 +658,15 @@
             }
 
             async function runIntro() {
+                // Check if intro has run in this session
+                if (sessionStorage.getItem('introShown')) {
+                    introOverlay.remove();
+                    document.body.classList.remove('overflow-hidden');
+                    setTimeout(typeWriter, 500);
+                    return;
+                }
+                sessionStorage.setItem('introShown', 'true');
+
                 // Phase 1: Breach
                 for (const log of breachLogs) {
                     await typeLog(log, '#0f0', 300);
