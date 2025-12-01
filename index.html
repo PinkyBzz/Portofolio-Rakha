@@ -10,6 +10,7 @@
     <!-- Three.js & Vanta.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
@@ -277,11 +278,200 @@
             border-color: #10b981;
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
         }
+        .ip-widget.minimized #ip-content {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+        .ip-widget.minimized #ip-toggle-icon {
+            transform: rotate(180deg);
+        }
         .ip-label { color: #10b981; font-weight: bold; }
         .ip-value { color: #d1d5db; }
+
+        /* Achievement Popup */
+        #achievement-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .achievement-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #10b981;
+            border-left: 4px solid #10b981;
+            padding: 12px 16px;
+            border-radius: 4px;
+            width: 300px;
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+        }
+        .achievement-card.show {
+            transform: translateX(0);
+        }
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10b981;
+        }
+
+        /* Boss Mode Overlay */
+        #boss-mode {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 99999;
+            display: none;
+            font-family: Arial, sans-serif;
+            color: #000;
+            overflow: auto;
+        }
+        .excel-grid {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .excel-grid th, .excel-grid td {
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            font-size: 12px;
+            text-align: left;
+        }
+        .excel-grid th {
+            background: #f3f3f3;
+            font-weight: normal;
+            text-align: center;
+        }
+        .excel-header {
+            background: #217346;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Secure Input Effect */
+        .secure-input-wrapper {
+            position: relative;
+        }
+        .secure-preview {
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #10b981;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Feature 1: Holo Card Effect */
+        .holo-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+        .holo-content {
+            transform: translateZ(20px);
+        }
+        .holo-shine {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            transition: opacity 0.3s;
+            mix-blend-mode: overlay;
+        }
+
+        /* Feature 2: Redacted Text */
+        .redacted-text {
+            background: #000;
+            color: transparent;
+            padding: 0 4px;
+            border-radius: 2px;
+            cursor: help;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .redacted-text::before {
+            content: 'TOP SECRET';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8px;
+            color: rgba(255,255,255,0.2);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .redacted-text:hover, body.redacted-reveal .redacted-text {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .redacted-text:hover::before, body.redacted-reveal .redacted-text::before {
+            display: none;
+        }
+
+        /* Feature 3: Brute Force Widget */
+        .bf-char {
+            display: inline-block;
+            width: 1ch;
+            text-align: center;
+        }
+        .bf-cracked {
+            color: #10b981;
+            text-shadow: 0 0 5px #10b981;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative overflow-hidden">
+    <!-- Boss Mode Overlay -->
+    <div id="boss-mode">
+        <div class="excel-header">
+            <span>📊</span>
+            <span>Annual_Budget_Report_2025.xlsx - Excel</span>
+        </div>
+        <div class="bg-[#f3f3f3] p-2 border-b border-[#ccc] flex gap-4 text-xs">
+            <span>File</span><span>Home</span><span>Insert</span><span>Page Layout</span><span>Formulas</span><span>Data</span>
+        </div>
+        <div class="p-1 bg-white border-b border-[#ccc] text-xs font-mono">
+            A1: <span class="ml-2">Q1 Financial Summary</span>
+        </div>
+        <table class="excel-grid">
+            <thead>
+                <tr>
+                    <th style="width: 40px"></th>
+                    <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows generated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Achievement Container -->
+    <div id="achievement-container"></div>
+
     <!-- Intro Overlay -->
     <div id="intro-overlay">
         <div id="intro-terminal"></div>
@@ -334,7 +524,7 @@
                     </h1>
                     
                     <p class="max-w-xl text-lg text-neutral-500 font-light leading-relaxed reveal-on-scroll">
-                        Siswa SMKN 40 Jakarta yang berfokus pada pengembangan aplikasi aman dan sederhana. Saya senang bekerja dalam tim, menyusun strategi, dan mengeksekusi rencana secara disiplin.
+                        Siswa <span class="redacted-text">SMKN 40 Jakarta</span> yang berfokus pada pengembangan aplikasi aman dan sederhana. Saya senang bekerja dalam tim, menyusun strategi, dan mengeksekusi rencana secara disiplin.
                     </p>
 
                     <div class="flex gap-4 pt-4 reveal-on-scroll">
@@ -360,11 +550,12 @@
             <!-- Bento Grid (Prestasi & Keahlian) -->
             <section id="achievements" class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
                 
-                <!-- Card 1: Main Achievement (LKS) -->
-                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 row-span-2 relative overflow-hidden flex flex-col justify-between reveal-on-scroll">
+                <!-- Card 1: Main Achievement (LKS) - HOLO EFFECT -->
+                <div id="lks-card" class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 row-span-2 relative overflow-hidden flex flex-col justify-between reveal-on-scroll holo-card">
+                    <div class="holo-shine"></div>
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    <div class="relative z-10">
+                    <div class="relative z-10 holo-content">
                         <div class="flex items-center justify-between mb-4">
                             <div class="p-2 bg-white/5 rounded-lg border border-white/10">
                                 <i data-lucide="trophy" class="w-5 h-5 text-yellow-500"></i>
@@ -378,7 +569,7 @@
                     </div>
 
                     <!-- Mock Code Window / Terminal for LKS -->
-                    <div class="relative w-full bg-neutral-900 rounded-lg border border-white/10 p-4 font-mono text-xs overflow-hidden shadow-2xl group-hover:translate-y-[-4px] transition-transform duration-500">
+                    <div class="relative w-full bg-neutral-900 rounded-lg border border-white/10 p-4 font-mono text-xs overflow-hidden shadow-2xl group-hover:translate-y-[-4px] transition-transform duration-500 holo-content">
                         <div class="flex gap-1.5 mb-3">
                             <div class="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
                             <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
@@ -395,22 +586,27 @@
                     </div>
                 </div>
 
-                <!-- Card 2: SecOps / Terminal Style -->
-                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden reveal-on-scroll">
-                    <div class="flex flex-col h-full justify-between">
-                        <div>
-                            <div class="flex items-center gap-2 mb-4">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
-                                <span class="text-xs font-medium text-white tracking-wide uppercase">Security Operations</span>
-                            </div>
-                            <h3 class="text-lg font-medium text-white tracking-tight hacker-text" data-value="Pentesting & Analysis">Pentesting & Analysis</h3>
+                <!-- Card 2: SecOps / Threat Map -->
+                <div class="group glass-card rounded-xl p-0 md:col-span-3 lg:col-span-2 relative overflow-hidden reveal-on-scroll flex flex-col">
+                    <div class="absolute inset-0 bg-black/40 z-0"></div>
+                    
+                    <!-- Header -->
+                    <div class="relative z-10 p-4 border-b border-white/5 flex justify-between items-center bg-black/20 backdrop-blur-sm">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="globe" class="w-4 h-4 text-emerald-500 animate-pulse"></i>
+                            <span class="text-xs font-medium text-white tracking-wide uppercase">Live Threat Map</span>
                         </div>
-                        
-                        <div class="mt-4 bg-black/50 rounded border border-white/10 p-3 font-mono text-xs text-emerald-500 h-24 flex flex-col justify-end">
-                            <div class="opacity-50">rakha@kali:~# nmap -sC -sV target.com</div>
-                            <div class="opacity-75">Starting Nmap 7.92...</div>
-                            <div class="terminal-text">Discovered open ports: 80, 443, 22...</div>
+                        <div class="flex gap-2 text-[10px] font-mono text-emerald-500/70">
+                            <span>ATTACKS: <span id="attack-count">0</span></span>
+                            <span>STATUS: <span class="text-red-500 animate-pulse">CRITICAL</span></span>
                         </div>
+                    </div>
+
+                    <!-- Canvas Container -->
+                    <div class="relative flex-grow w-full h-full min-h-[180px]">
+                        <canvas id="threat-map" class="absolute inset-0 w-full h-full block"></canvas>
+                        <!-- Overlay Grid -->
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
                     </div>
                 </div>
 
@@ -440,76 +636,56 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Stats / Organization (Omniverse HUD Style) -->
-                <div id="osis-card" class="group glass-card rounded-xl p-0 md:col-span-2 lg:col-span-1 relative overflow-hidden flex flex-col justify-center items-center text-center min-h-[280px] bg-black border-2 border-neutral-800 shadow-2xl">
+                <!-- Card 4: Stats / Organization (Optimized Cyber Deck Style) -->
+                <div id="osis-card" class="group glass-card rounded-xl p-5 md:col-span-2 lg:col-span-1 relative overflow-hidden flex flex-col min-h-[240px] border border-white/10 hover:border-emerald-500/50 transition-all duration-300">
                     
-                    <!-- Default State (Text) -->
-                    <div class="default-content absolute inset-0 flex flex-col justify-center items-center transition-all duration-500 z-20 bg-black/90 group-hover:opacity-0 group-hover:pointer-events-none">
-                        <div class="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(16,185,129,0.5)]">
-                            <i data-lucide="users" class="w-8 h-8 text-emerald-500"></i>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between z-10 mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 bg-emerald-500/10 rounded border border-emerald-500/30">
+                                <i data-lucide="users" class="w-3 h-3 text-emerald-500"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-white tracking-wide">OSIS_ARCHIVE</h3>
+                                <p class="text-[10px] text-neutral-500 uppercase">Ketua Angkatan</p>
+                            </div>
                         </div>
-                        <h3 class="text-3xl font-bold text-white tracking-tighter mb-1">OSIS</h3>
-                        <p class="text-xs text-emerald-500 uppercase tracking-widest">Ketua Angkatan</p>
+                        <div class="flex gap-1">
+                            <div class="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+                            <div class="w-1 h-1 bg-emerald-500/30 rounded-full"></div>
+                            <div class="w-1 h-1 bg-emerald-500/30 rounded-full"></div>
+                        </div>
                     </div>
 
-                    <!-- Omnitrix HUD Interface -->
-                    <div class="omnitrix-hud absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-center justify-center scale-90 group-hover:scale-100">
-                        
-                        <!-- The Green Ring Container -->
-                        <div class="relative w-64 h-64 flex items-center justify-center">
-                            
-                            <!-- Rotating Ring (The Wheel) -->
-                            <div id="omni-ring" class="absolute inset-0 rounded-full border-[40px] border-emerald-500/20 transition-transform duration-500 ease-out">
-                                <!-- Icons will be injected here by JS -->
-                            </div>
+                    <!-- Main Display (The "Screen") -->
+                    <div class="relative flex-1 bg-black/50 rounded border border-white/10 overflow-hidden group/screen cursor-pointer transition-all duration-500 ease-in-out" id="osis-viewer-trigger">
+                        <!-- Content injected by JS -->
+                    </div>
 
-                            <!-- Static Overlay (The HUD Frame) -->
-                            <div class="absolute inset-0 pointer-events-none">
-                                <!-- Top Selection Highlight (Trapezoid-ish) -->
-                                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-16 bg-emerald-500/30 blur-md"></div>
-                                <div class="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-20 border-t-4 border-emerald-400 rounded-full"></div>
-                                
-                                <!-- Side Brackets -->
-                                <div class="absolute top-1/2 left-2 -translate-y-1/2 w-4 h-12 bg-emerald-500/20 border-r-2 border-emerald-500"></div>
-                                <div class="absolute top-1/2 right-2 -translate-y-1/2 w-4 h-12 bg-emerald-500/20 border-l-2 border-emerald-500"></div>
-                            </div>
-
-                            <!-- Central Core (Active Image Display) -->
-                            <div id="omni-core" class="relative w-32 h-32 bg-black rounded-[2rem] border-4 border-emerald-500 overflow-hidden cursor-pointer z-30 shadow-[0_0_30px_rgba(16,185,129,0.4)] group/core transition-transform hover:scale-105 active:scale-95">
-                                <!-- The Hourglass Shape Overlay -->
-                                <div class="absolute inset-0 z-20 pointer-events-none opacity-50">
-                                    <div class="absolute top-0 left-0 w-full h-1/3 bg-black/40 skew-y-6 origin-top-right"></div>
-                                    <div class="absolute bottom-0 left-0 w-full h-1/3 bg-black/40 -skew-y-6 origin-bottom-right"></div>
-                                </div>
-                                
-                                <!-- Active Image -->
-                                <img id="omni-active-img" src="" class="w-full h-full object-cover transition-all duration-300 filter sepia hue-rotate-[50deg] brightness-125 contrast-125 group-hover/core:filter-none">
-                                
-                                <!-- Scanline -->
-                                <div class="absolute inset-0 bg-[linear-gradient(transparent_2px,rgba(16,185,129,0.2)_2px)] bg-[length:100%_4px] pointer-events-none z-30"></div>
-                            </div>
-
+                    <!-- Controls -->
+                    <div class="flex items-center justify-between z-10 mt-3 pt-3 border-t border-white/5">
+                        <button id="osis-prev" class="p-1.5 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <div class="flex gap-1" id="osis-indicators">
+                            <!-- Indicators injected by JS -->
                         </div>
-
-                        <!-- Controls (Invisible click areas or visible buttons) -->
-                        <button id="omni-prev" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 text-emerald-500 rounded-full border border-emerald-500/50 hover:bg-emerald-500 hover:text-black z-40 flex items-center justify-center transition-all">
-                            <i data-lucide="chevron-left"></i>
-                        </button>
-                        <button id="omni-next" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 text-emerald-500 rounded-full border border-emerald-500/50 hover:bg-emerald-500 hover:text-black z-40 flex items-center justify-center transition-all">
-                            <i data-lucide="chevron-right"></i>
-                        </button>
-                        
-                        <!-- Label -->
-                        <div id="omni-label" class="absolute bottom-4 bg-black/80 text-emerald-400 px-3 py-1 rounded border border-emerald-500/30 font-mono text-xs tracking-widest shadow-[0_0_10px_rgba(16,185,129,0.3)]">
-                            LOADING...
-                        </div>
+                        <button id="osis-next" class="p-1.5 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
 
-                <!-- Card 5: Tech Stack -->
-                <div id="skills" class="group glass-card rounded-xl p-6 md:col-span-2 lg:col-span-2 flex flex-col justify-between reveal-on-scroll">
-                    <h3 class="text-lg font-medium text-white tracking-tight mb-4 hacker-text" data-value="Tech Arsenal">Tech Arsenal</h3>
-                    <div class="grid grid-cols-4 gap-4">
+                <!-- Card 5: Tech Stack (Hybrid: Grid + Graph Toggle) -->
+                <div id="skills" class="group glass-card rounded-xl p-6 md:col-span-2 lg:col-span-2 flex flex-col justify-between reveal-on-scroll relative overflow-hidden min-h-[280px]">
+                    
+                    <!-- Header with Toggle -->
+                    <div class="flex justify-between items-start mb-4 z-20 relative">
+                        <h3 class="text-lg font-medium text-white tracking-tight hacker-text" data-value="Tech Arsenal">Tech Arsenal</h3>
+                        <button id="toggle-skill-view" class="p-1.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs flex items-center gap-2 text-neutral-400 hover:text-white">
+                            <i data-lucide="network" class="w-3 h-3"></i>
+                            <span id="skill-view-label">Graph View</span>
+                        </button>
+                    </div>
+
+                    <!-- View 1: Grid (Default - Clear & Readable) -->
+                    <div id="skill-grid" class="grid grid-cols-4 gap-4 transition-opacity duration-300">
                         <div class="flex flex-col items-center gap-2 p-2 rounded hover:bg-white/5 transition-colors cursor-default" title="C#">
                             <i class="devicon-csharp-plain text-2xl text-neutral-300"></i>
                             <span class="text-xs">C#</span>
@@ -543,16 +719,22 @@
                             <span class="text-xs">English</span>
                         </div>
                     </div>
+
+                    <!-- View 2: Graph (Hidden by default) -->
+                    <div id="skill-graph-container" class="absolute inset-0 top-14 bg-neutral-900/90 backdrop-blur-sm z-10 opacity-0 pointer-events-none transition-opacity duration-300">
+                        <div id="skill-graph" class="w-full h-full cursor-move"></div>
+                    </div>
                 </div>
 
                 <!-- Card 6: TimelessProject (Startup) -->
-                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col justify-between min-h-[240px] reveal-on-scroll">
+                <div id="project-timeless" class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col justify-between min-h-[240px] reveal-on-scroll cursor-pointer hover:border-emerald-500/30 transition-all holo-card">
+                     <div class="holo-shine"></div>
                      <div class="absolute inset-0">
                         <img src="timelessbackground.jpeg" alt="TimelessProject" class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
                      </div>
                      
-                     <div class="relative z-10 h-full flex flex-col justify-between">
+                     <div class="relative z-10 h-full flex flex-col justify-between holo-content">
                         <div class="flex items-center gap-2 mb-4">
                             <div class="p-1.5 bg-pink-500/20 rounded border border-pink-500/30">
                                 <i data-lucide="rocket" class="w-4 h-4 text-pink-500"></i>
@@ -560,7 +742,7 @@
                             <span class="text-xs font-medium text-white tracking-wide uppercase">Startup</span>
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-white tracking-tight">TimelessProject</h3>
+                            <h3 class="text-lg font-medium text-white tracking-tight">TimelessProject <span class="redacted-text ml-2 text-xs align-middle">CONFIDENTIAL</span></h3>
                             <p class="text-sm text-neutral-300 mt-2 leading-relaxed">
                                 Startup industri kreatif yang fokus pada konten visual dan kolaborasi komunitas. Menggabungkan estetika dan dampak.
                             </p>
@@ -568,8 +750,33 @@
                      </div>
                 </div>
 
-                 <!-- Card 7: Other Achievements List -->
-                 <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col reveal-on-scroll">
+                <!-- Card 7: Brute Force Visualizer (New) -->
+                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col reveal-on-scroll">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="lock" class="w-4 h-4 text-red-500"></i>
+                            <span class="text-xs font-medium text-white tracking-wide uppercase">Password Cracker</span>
+                        </div>
+                        <div class="text-[10px] font-mono text-neutral-500">BRUTE_FORCE_MODULE_V1</div>
+                    </div>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="bf-input" placeholder="Enter password..." class="bg-black/50 border border-white/10 rounded px-3 py-2 text-xs text-white w-full focus:border-red-500 outline-none font-mono placeholder:text-neutral-700">
+                        <button id="bf-btn" class="bg-red-500/10 text-red-500 border border-red-500/30 px-3 rounded text-xs font-bold hover:bg-red-500 hover:text-white transition-all">CRACK</button>
+                    </div>
+                    
+                    <div id="bf-display" class="bg-black rounded p-4 font-mono text-lg tracking-widest min-h-[60px] flex items-center justify-center text-neutral-600 border border-white/5 overflow-hidden break-all">
+                        WAITING...
+                    </div>
+                    
+                    <div class="mt-3 flex justify-between text-[10px] font-mono text-neutral-500">
+                        <span>ATTEMPTS: <span id="bf-attempts" class="text-white">0</span></span>
+                        <span>STATUS: <span id="bf-status" class="text-neutral-500">IDLE</span></span>
+                    </div>
+                </div>
+
+                 <!-- Card 8: Other Achievements List -->
+                 <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-4 relative overflow-hidden flex flex-col reveal-on-scroll">
                     <h3 class="text-lg font-medium text-white tracking-tight mb-4 hacker-text" data-value="Prestasi Lainnya">Prestasi Lainnya</h3>
                     <ul class="space-y-3 text-sm text-neutral-400">
                         <li class="flex items-start gap-2">
@@ -676,9 +883,10 @@
                                 <input id="contact-email" type="email" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors" placeholder="email@contoh.com">
                             </div>
                         </div>
-                        <div class="space-y-1">
+                        <div class="space-y-1 secure-input-wrapper">
                             <label class="text-xs font-medium text-neutral-400 ml-1">Pesan</label>
                             <textarea id="contact-message" rows="4" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors resize-none" placeholder="Ceritakan tentang proyek Anda..."></textarea>
+                            <div id="secure-preview" class="secure-preview"></div>
                         </div>
                         <button id="send-whatsapp-btn" type="button" class="w-full bg-white text-black font-medium py-2 rounded text-sm hover:bg-neutral-200 transition-colors">
                             Kirim Pesan
@@ -689,7 +897,9 @@
 
             <footer class="flex justify-between items-center text-xs text-neutral-600 pt-8">
                 <p>&copy; 2025 Muhammad Rakha. All rights reserved.</p>
-                <div class="flex gap-4">
+                <!-- CTF FLAG 1: CTF{H7ML_H1DD3N_G3M} -->
+                <div class="flex items-center gap-4">
+                    <canvas id="server-stats" width="100" height="20" class="opacity-50"></canvas>
                     <span>Designed with code</span>
                 </div>
             </footer>
@@ -758,30 +968,54 @@
             });
 
             const commands = {
-                help: "Available commands: help, about, skills, contact, clear, whoami, date, matrix",
+                help: "Available commands: help, about, skills, contact, clear, whoami, date, matrix, submit <flag>, hints",
                 about: "Muhammad Rakha. Student at SMKN 40 Jakarta. Cyber Security Enthusiast. Musician.",
                 skills: "Languages: PHP, C#, Dart, JS\nTools: Laravel, Flutter, Burp Suite, Nmap",
                 contact: "Email: rakhamuhammad191@gmail.com\nPhone: 0822-1159-9226",
                 whoami: "guest_user@internet",
                 date: new Date().toString(),
                 clear: "CLEAR",
-                matrix: "MATRIX_EFFECT"
+                matrix: "MATRIX_EFFECT",
+                hints: "CLASSIFIED INTEL:\n1. [HTML] The foundation lies beneath the footer.\n2. [CONSOLE] Developers speak in logs (F12).\n3. [ADMIN] Only the system administrator knows the final code."
+            };
+
+            const validFlags = {
+                'CTF{H7ML_H1DD3N_G3M}': 'html_hunter',
+                'CTF{C0NS0L3_L0G}': 'console_cowboy',
+                'CTF{R4KH4_4DM1N}': 'admin_access'
             };
 
             cmdInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    const input = cmdInput.value.trim().toLowerCase();
-                    if (input) {
+                    const inputRaw = cmdInput.value.trim();
+                    const inputParts = inputRaw.split(' ');
+                    const command = inputParts[0].toLowerCase();
+                    const arg = inputParts[1];
+
+                    if (inputRaw) {
                         // Add input line
                         const inputLine = document.createElement('div');
-                        inputLine.innerHTML = `<span class="text-green-500">➜</span> <span class="text-blue-400">~</span> <span class="text-white">${input}</span>`;
+                        inputLine.innerHTML = `<span class="text-green-500">➜</span> <span class="text-blue-400">~</span> <span class="text-white">${inputRaw}</span>`;
                         cmdOutput.appendChild(inputLine);
 
                         // Process command
-                        if (commands[input]) {
-                            if (commands[input] === "CLEAR") {
+                        if (command === 'submit') {
+                            if (validFlags[arg]) {
+                                const response = document.createElement('div');
+                                response.className = "text-yellow-400 mb-2 font-bold";
+                                response.textContent = `[+] FLAG ACCEPTED: ${arg}`;
+                                cmdOutput.appendChild(response);
+                                showAchievement(validFlags[arg]);
+                            } else {
+                                const response = document.createElement('div');
+                                response.className = "text-red-400 mb-2";
+                                response.textContent = `[-] INVALID FLAG: ${arg || 'No flag provided'}`;
+                                cmdOutput.appendChild(response);
+                            }
+                        } else if (commands[command]) {
+                            if (commands[command] === "CLEAR") {
                                 cmdOutput.innerHTML = '';
-                            } else if (commands[input] === "MATRIX_EFFECT") {
+                            } else if (commands[command] === "MATRIX_EFFECT") {
                                 const msg = document.createElement('div');
                                 msg.className = "text-green-400 mb-2";
                                 msg.textContent = "Wake up, Neo...";
@@ -790,13 +1024,13 @@
                             } else {
                                 const response = document.createElement('div');
                                 response.className = "text-neutral-300 mb-2 whitespace-pre-wrap";
-                                response.textContent = commands[input];
+                                response.textContent = commands[command];
                                 cmdOutput.appendChild(response);
                             }
                         } else {
                             const error = document.createElement('div');
                             error.className = "text-red-400 mb-2";
-                            error.textContent = `Command not found: ${input}. Type 'help' for list.`;
+                            error.textContent = `Command not found: ${command}. Type 'help' for list.`;
                             cmdOutput.appendChild(error);
                         }
                         
@@ -810,6 +1044,7 @@
             // 1. Console Message
             console.log("%c STOP! ", "color: red; font-size: 50px; font-weight: bold; text-shadow: 2px 2px black;");
             console.log("%c You found the developer tools. If you're looking for bugs, I hope you don't find any! ", "color: #10b981; font-size: 16px;");
+            console.log("%c Pssst... here is a flag: CTF{C0NS0L3_L0G} ", "color: #3b82f6; font-size: 12px; background: #000; padding: 4px;");
 
             // 2. Konami Code
             const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
@@ -868,13 +1103,26 @@
             // --- IP INTEL WIDGET ---
             async function fetchIPIntel() {
                 const widget = document.getElementById('ip-widget');
+                const header = document.getElementById('ip-header');
                 const ipEl = document.getElementById('user-ip');
                 const locEl = document.getElementById('user-loc');
                 const ispEl = document.getElementById('user-isp');
                 const uaEl = document.getElementById('user-ua');
 
+                // Toggle Minimize
+                if (header) {
+                    header.addEventListener('click', () => {
+                        widget.classList.toggle('minimized');
+                    });
+                }
+
                 // Show widget
                 widget.style.display = 'block';
+                
+                // Re-init icons for the new chevron
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
 
                 // Set User Agent immediately
                 const platform = navigator.platform;
@@ -899,127 +1147,142 @@
             // Call after a slight delay
             setTimeout(fetchIPIntel, 2000);
 
-            // --- OMNITRIX LOGIC (HUD STYLE) ---
-            const osisImages = [
-                { src: "foto osis/DSC09381.JPG", label: "RAPAT_KERJA" },
-                { src: "foto osis/DSC09739.JPG", label: "EVENT_SEKOLAH" },
-                { src: "foto osis/IMG_6000.JPG", label: "BAKTI_SOSIAL" },
-                { src: "foto osis/IMG_6006.JPG", label: "DOKUMENTASI_1" },
-                { src: "foto osis/IMG_6136.JPG", label: "DOKUMENTASI_2" }
+            // --- OSIS ARCHIVE LOGIC (GROUPED & ANIMATED) ---
+            const osisSlides = [
+                { 
+                    type: 'landscape', 
+                    images: [{ src: "foto osis/DSC09381.JPG", label: "OSIS" }] 
+                },
+                        { 
+                    type: 'portrait-group', 
+                    images: [
+                        { src: "foto osis/IMG_6000.JPG", label: "BAND" },
+                        { src: "foto osis/IMG_6006.JPG", label: "DOKUMENTASI" }
+                    ]
+                },
+                { 
+                    type: 'portrait', 
+                    images: [{ src: "foto osis/IMG_6136.JPG", label: "KEGIATAN_LAIN" }] 
+                }
             ];
             let osisIndex = 0;
             
-            const omniRing = document.getElementById('omni-ring');
-            const omniActiveImg = document.getElementById('omni-active-img');
-            const omniLabel = document.getElementById('omni-label');
-            const omniNext = document.getElementById('omni-next');
-            const omniPrev = document.getElementById('omni-prev');
-            const omniCore = document.getElementById('omni-core');
+            const osisViewer = document.getElementById('osis-viewer-trigger');
+            const osisNext = document.getElementById('osis-next');
+            const osisPrev = document.getElementById('osis-prev');
+            const osisIndicators = document.getElementById('osis-indicators');
 
-            function renderWheel() {
-                if (!omniRing) return;
-                omniRing.innerHTML = '';
-                const radius = 100; // Distance from center
-                const angleStep = 360 / osisImages.length;
-
-                osisImages.forEach((img, i) => {
-                    const iconContainer = document.createElement('div');
-                    iconContainer.className = "absolute w-12 h-12 rounded-full border-2 border-emerald-500/50 bg-black overflow-hidden transition-all duration-500";
-                    
-                    // Calculate position
-                    // We want index 0 at -90deg (top) initially? No, let's say 0deg is top.
-                    // CSS rotation starts at 12 o'clock if we use transform-origin center.
-                    // Actually, standard trig 0 is 3 o'clock.
-                    // Let's just use rotate() on the container.
-                    
-                    // Position: 
-                    // We place them at 0, 72, 144... degrees.
-                    // To place them, we can use: transform: rotate(deg) translate(radius) rotate(-deg)
-                    const angle = i * angleStep;
-                    
-                    // Adjust angle so index 0 is at top (270 deg or -90 deg)
-                    // But we will rotate the PARENT (omniRing).
-                    // So let's just place them relative to the ring's 0.
-                    // If ring is at 0, index 0 should be at top.
-                    // Top is -90deg in CSS if 0 is right.
-                    // Let's use: top: 50%, left: 50%, transform: translate(-50%, -50%) rotate(...) translate(...)
-                    
-                    iconContainer.style.top = '50%';
-                    iconContainer.style.left = '50%';
-                    // -90 to start at top
-                    iconContainer.style.transform = `translate(-50%, -50%) rotate(${angle - 90}deg) translate(${radius}px) rotate(${-(angle - 90)}deg)`;
-                    
-                    const iconImg = document.createElement('img');
-                    iconImg.src = img.src;
-                    iconImg.className = "w-full h-full object-cover filter sepia hue-rotate-[50deg] brightness-150 contrast-125 opacity-60";
-                    
-                    iconContainer.appendChild(iconImg);
-                    omniRing.appendChild(iconContainer);
-                });
-            }
-
-            function updateOmnitrix() {
-                if (!omniRing) return;
+            function updateOsisDisplay() {
+                if (!osisViewer) return;
                 
-                // Rotate the ring so the current index is at the top
-                const angleStep = 360 / osisImages.length;
-                const rotation = -osisIndex * angleStep;
-                
-                omniRing.style.transform = `rotate(${rotation}deg)`;
-                
-                // Update Active Image (Center)
-                // Glitch effect
-                omniActiveImg.style.opacity = '0.2';
-                omniActiveImg.style.filter = 'hue-rotate(90deg) blur(4px)';
+                // Animate Out
+                osisViewer.style.opacity = '0';
+                osisViewer.style.transform = 'scale(0.98)';
                 
                 setTimeout(() => {
-                    omniActiveImg.src = osisImages[osisIndex].src;
-                    omniLabel.textContent = osisImages[osisIndex].label;
-                    omniActiveImg.style.opacity = '1';
-                    omniActiveImg.style.filter = 'sepia(1) hue-rotate(50deg) brightness(1.2) contrast(1.2)';
-                }, 150);
+                    // Clear current content
+                    osisViewer.innerHTML = '';
+                    const slide = osisSlides[osisIndex];
+                    
+                    // Create Content Container
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = "w-full h-full flex gap-0.5 transition-all duration-500";
+                    
+                    slide.images.forEach(imgData => {
+                        const imgWrapper = document.createElement('div');
+                        // If group, width is 50%, else 100%
+                        imgWrapper.className = slide.images.length > 1 ? "w-1/2 h-full relative overflow-hidden group/img" : "w-full h-full relative overflow-hidden group/img";
+                        
+                        const img = document.createElement('img');
+                        img.src = imgData.src;
+                        img.className = "w-full h-full object-cover opacity-80 group-hover/img:opacity-100 transition-all duration-700 group-hover/img:scale-110";
+                        
+                        // Click to open lightbox
+                        imgWrapper.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openLightbox(imgData.src, imgData.label);
+                        });
 
-                // Highlight the active icon on the ring
-                const icons = omniRing.children;
-                for (let i = 0; i < icons.length; i++) {
-                    const img = icons[i].querySelector('img');
-                    if (i === osisIndex) {
-                        icons[i].style.borderColor = '#10b981'; // Bright green
-                        icons[i].style.boxShadow = '0 0 15px #10b981';
-                        img.style.opacity = '1';
-                    } else {
-                        icons[i].style.borderColor = 'rgba(16, 185, 129, 0.3)';
-                        icons[i].style.boxShadow = 'none';
-                        img.style.opacity = '0.4';
+                        imgWrapper.appendChild(img);
+                        contentDiv.appendChild(imgWrapper);
+                    });
+
+                    // Overlay UI
+                    const overlay = document.createElement('div');
+                    overlay.className = "absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-3 pointer-events-none";
+                    
+                    const labelText = slide.images.map(i => i.label).join(' & ');
+                    
+                    overlay.innerHTML = `
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <p class="text-[10px] text-neutral-500 mb-0.5">FILE_NAME:</p>
+                                <p class="text-xs font-mono text-emerald-400 font-bold truncate max-w-[150px]">${labelText}</p>
+                            </div>
+                            <i data-lucide="maximize-2" class="w-3 h-3 text-white/50"></i>
+                        </div>
+                    `;
+                    
+                    // Scanline
+                    const scanline = document.createElement('div');
+                    scanline.className = "absolute inset-0 bg-[linear-gradient(transparent_2px,rgba(0,0,0,0.5)_2px)] bg-[length:100%_4px] pointer-events-none opacity-20";
+
+                    osisViewer.appendChild(contentDiv);
+                    osisViewer.appendChild(overlay);
+                    osisViewer.appendChild(scanline);
+                    
+                    // Re-init icons
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                    // Animate In
+                    osisViewer.style.opacity = '1';
+                    osisViewer.style.transform = 'scale(1)';
+                    
+                    // Update indicators
+                    if (osisIndicators) {
+                        Array.from(osisIndicators.children).forEach((dot, i) => {
+                            if (i === osisIndex) {
+                                dot.className = "w-2 h-2 bg-emerald-500 rounded-full transition-all shadow-[0_0_10px_rgba(16,185,129,0.5)]";
+                            } else {
+                                dot.className = "w-1.5 h-1.5 bg-white/10 rounded-full transition-all hover:bg-white/30";
+                            }
+                        });
                     }
-                }
+                }, 300);
             }
 
-            if (omniNext && omniPrev) {
-                omniNext.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    osisIndex = (osisIndex + 1) % osisImages.length;
-                    updateOmnitrix();
-                });
-
-                omniPrev.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    osisIndex = (osisIndex - 1 + osisImages.length) % osisImages.length;
-                    updateOmnitrix();
+            function initIndicators() {
+                if (!osisIndicators) return;
+                osisIndicators.innerHTML = '';
+                osisSlides.forEach((_, i) => {
+                    const dot = document.createElement('div');
+                    dot.className = "w-1.5 h-1.5 bg-white/10 rounded-full cursor-pointer";
+                    dot.addEventListener('click', () => {
+                        osisIndex = i;
+                        updateOsisDisplay();
+                    });
+                    osisIndicators.appendChild(dot);
                 });
             }
 
-            if (omniCore) {
-                omniCore.addEventListener('click', () => {
-                    openLightbox(osisImages[osisIndex].src, osisImages[osisIndex].label);
+            if (osisNext && osisPrev) {
+                osisNext.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    osisIndex = (osisIndex + 1) % osisSlides.length;
+                    updateOsisDisplay();
+                });
+
+                osisPrev.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    osisIndex = (osisIndex - 1 + osisSlides.length) % osisSlides.length;
+                    updateOsisDisplay();
                 });
             }
 
             // Initialize
-            if (osisImages.length > 0) {
-                renderWheel();
-                // Small delay to ensure DOM is ready for initial render
-                setTimeout(updateOmnitrix, 100);
+            if (osisSlides.length > 0) {
+                initIndicators();
+                updateOsisDisplay();
             }
 
             // Typing Effect Logic
@@ -1215,7 +1478,7 @@
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxClose = document.getElementById('lightbox-close');
             
-            // Initialize Vanta.js (Network Effect)
+            // Initialize Vanta.js (Network Effect) - Optimized
             if (window.VANTA) {
                 VANTA.NET({
                     el: "#vanta-bg",
@@ -1228,9 +1491,10 @@
                     scaleMobile: 1.00,
                     color: 0x10b981,       // Emerald
                     backgroundColor: 0x0a0a0a, // Dark
-                    points: 12.00,
-                    maxDistance: 22.00,
-                    spacing: 18.00
+                    points: 8.00,          // Reduced from 12
+                    maxDistance: 18.00,    // Reduced from 22
+                    spacing: 20.00,        // Increased spacing
+                    showDots: false        // Hide dots to save performance
                 });
             }
 
@@ -1424,6 +1688,588 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeLightbox();
             });
+
+            /* =========================================
+               ACHIEVEMENT SYSTEM
+               ========================================= */
+            const achievements = [
+                { id: 'welcome', title: 'System Access', desc: 'Connected to the portfolio mainframe.', icon: 'wifi' },
+                { id: 'terminal_master', title: 'Root Access', desc: 'Opened the command terminal.', icon: 'terminal' },
+                { id: 'explorer', title: 'Data Miner', desc: 'Scrolled to the bottom of the page.', icon: 'database' },
+                { id: 'security_breach', title: 'Security Breach', desc: 'Found the secret context menu.', icon: 'shield-alert' },
+                { id: 'matrix_mode', title: 'The One', desc: 'Activated the Matrix protocol.', icon: 'code' },
+                { id: 'html_hunter', title: 'Source Code Hunter', desc: 'Found the hidden HTML flag.', icon: 'file-code' },
+                { id: 'console_cowboy', title: 'Console Cowboy', desc: 'Found the hidden Console flag.', icon: 'monitor' },
+                { id: 'admin_access', title: 'Admin Access', desc: 'Cracked the ultimate code.', icon: 'lock' }
+            ];
+
+            const unlockedAchievements = JSON.parse(localStorage.getItem('rakha_achievements') || '[]');
+
+            function updateFlagCount() {
+                const flagIds = ['html_hunter', 'console_cowboy', 'admin_access'];
+                const foundCount = unlockedAchievements.filter(id => flagIds.includes(id)).length;
+                const flagCounter = document.getElementById('flag-counter');
+                if (flagCounter) flagCounter.textContent = `FLAGS: ${foundCount}/3`;
+            }
+
+            function showAchievement(id) {
+                if (unlockedAchievements.includes(id)) return;
+
+                const achievement = achievements.find(a => a.id === id);
+                if (!achievement) return;
+
+                unlockedAchievements.push(id);
+                localStorage.setItem('rakha_achievements', JSON.stringify(unlockedAchievements));
+                
+                // Update Flag Count if applicable
+                updateFlagCount();
+
+                const container = document.getElementById('achievement-container');
+                const card = document.createElement('div');
+                card.className = 'achievement-card glass-card border-l-4 border-emerald-500 p-4 rounded shadow-lg flex items-center gap-4 min-w-[300px]';
+                card.innerHTML = `
+                    <div class="bg-emerald-500/20 p-2 rounded-full">
+                        <i data-lucide="${achievement.icon}" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">Achievement Unlocked</h4>
+                        <p class="text-xs text-gray-300 font-mono">${achievement.title}</p>
+                        <p class="text-[10px] text-gray-500">${achievement.desc}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                // Animation
+                requestAnimationFrame(() => {
+                    card.classList.add('show');
+                });
+
+                // Remove after animation
+                setTimeout(() => {
+                    card.style.transform = 'translateX(120%)';
+                    setTimeout(() => card.remove(), 500);
+                }, 4000);
+            }
+
+            // Trigger Welcome Achievement
+            setTimeout(() => showAchievement('welcome'), 3000);
+
+            // Trigger Explorer Achievement (Scroll)
+            window.addEventListener('scroll', () => {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                    showAchievement('explorer');
+                }
+            });
+
+            // Hook into existing elements for achievements
+            if (openCmdBtn) {
+                openCmdBtn.addEventListener('click', () => showAchievement('terminal_master'));
+            }
+            
+            document.addEventListener('contextmenu', () => showAchievement('security_breach'));
+
+            // Hook into Matrix Mode (Konami Code)
+            const kCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let kIndex = 0;
+            document.addEventListener('keydown', (e) => {
+                if (e.key === kCode[kIndex]) {
+                    kIndex++;
+                    if (kIndex === kCode.length) {
+                        showAchievement('matrix_mode');
+                        kIndex = 0;
+                    }
+                } else {
+                    kIndex = 0;
+                }
+            });
+
+            /* =========================================
+               LIVE THREAT MAP
+               ========================================= */
+            function initThreatMap() {
+                const canvas = document.getElementById('threat-map');
+                if (!canvas) return;
+                
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                
+                function resize() {
+                    width = canvas.parentElement.offsetWidth;
+                    height = canvas.parentElement.offsetHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                const attacks = [];
+                const attackCountElem = document.getElementById('attack-count');
+                let totalAttacks = 0;
+
+                class Attack {
+                    constructor() {
+                        this.reset();
+                    }
+
+                    reset() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.targetX = Math.random() * width;
+                        this.targetY = Math.random() * height;
+                        this.progress = 0;
+                        this.speed = Math.random() * 0.01 + 0.005;
+                        this.color = Math.random() > 0.8 ? '#ef4444' : '#10b981'; // Mostly Emerald, some Red
+                        this.hasHit = false;
+                    }
+
+                    update() {
+                        this.progress += this.speed;
+                        if (this.progress >= 1) {
+                            if (!this.hasHit) {
+                                totalAttacks++;
+                                if(attackCountElem) attackCountElem.innerText = totalAttacks;
+                                this.hasHit = true;
+                            }
+                            this.reset();
+                        }
+                    }
+
+                    draw() {
+                        const currentX = this.x + (this.targetX - this.x) * this.progress;
+                        const currentY = this.y + (this.targetY - this.y) * this.progress;
+                        
+                        // Draw Trail
+                        const gradient = ctx.createLinearGradient(this.x, this.y, currentX, currentY);
+                        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                        gradient.addColorStop(1, this.color);
+                        
+                        ctx.beginPath();
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = 2;
+                        ctx.moveTo(this.x, this.y);
+                        ctx.lineTo(currentX, currentY);
+                        ctx.stroke();
+
+                        // Draw Head
+                        ctx.beginPath();
+                        ctx.fillStyle = '#fff';
+                        ctx.arc(currentX, currentY, 1.5, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        // Draw Impact Ripple if close to target
+                        if (this.progress > 0.95) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = this.color;
+                            ctx.lineWidth = 1;
+                            ctx.arc(this.targetX, this.targetY, (this.progress - 0.95) * 200, 0, Math.PI * 2);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Create initial attacks
+                for(let i = 0; i < 8; i++) {
+                    setTimeout(() => attacks.push(new Attack()), i * 500);
+                }
+
+                function animate() {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Trail effect
+                    ctx.fillRect(0, 0, width, height);
+
+                    attacks.forEach(attack => {
+                        attack.update();
+                        attack.draw();
+                    });
+
+                    // Draw random static points (servers)
+                    if (Math.random() > 0.9) {
+                        const x = Math.random() * width;
+                        const y = Math.random() * height;
+                        ctx.fillStyle = 'rgba(16, 185, 129, 0.5)';
+                        ctx.fillRect(x, y, 2, 2);
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            // Initialize Map
+            initThreatMap();
+            
+            // Initialize Flag Count
+            updateFlagCount();
+
+            /* =========================================
+               FEATURE 1: INTERACTIVE SKILL GRAPH (TOGGLEABLE)
+               ========================================= */
+            let networkInstance = null;
+            const skillGrid = document.getElementById('skill-grid');
+            const skillGraphContainer = document.getElementById('skill-graph-container');
+            const toggleSkillBtn = document.getElementById('toggle-skill-view');
+            const skillViewLabel = document.getElementById('skill-view-label');
+            let isGraphView = false;
+
+            function initSkillGraph() {
+                const container = document.getElementById('skill-graph');
+                if (!container) return;
+
+                // Only init once
+                if (networkInstance) return;
+
+                const nodes = new vis.DataSet([
+                    { id: 1, label: 'Rakha', color: '#10b981', size: 30, shape: 'dot', font: { color: '#fff', size: 16, face: 'JetBrains Mono' } },
+                    { id: 2, label: 'PHP', color: '#3b82f6', shape: 'dot' },
+                    { id: 3, label: 'Laravel', color: '#ef4444', shape: 'dot' },
+                    { id: 4, label: 'C#', color: '#a855f7', shape: 'dot' },
+                    { id: 5, label: 'Dart', color: '#06b6d4', shape: 'dot' },
+                    { id: 6, label: 'Flutter', color: '#3b82f6', shape: 'dot' },
+                    { id: 7, label: 'Security', color: '#10b981', shape: 'dot' },
+                    { id: 8, label: 'Nmap', color: '#10b981', shape: 'dot' },
+                    { id: 9, label: 'Burp', color: '#f97316', shape: 'dot' },
+                    { id: 10, label: 'Photo', color: '#eab308', shape: 'dot' },
+                    { id: 11, label: 'English', color: '#6366f1', shape: 'dot' }
+                ]);
+
+                const edges = new vis.DataSet([
+                    { from: 1, to: 2 }, { from: 1, to: 4 }, { from: 1, to: 5 }, { from: 1, to: 7 }, { from: 1, to: 10 }, { from: 1, to: 11 },
+                    { from: 2, to: 3 }, // PHP -> Laravel
+                    { from: 5, to: 6 }, // Dart -> Flutter
+                    { from: 7, to: 8 }, // Security -> Nmap
+                    { from: 7, to: 9 }  // Security -> Burp
+                ]);
+
+                const data = { nodes: nodes, edges: edges };
+                const options = {
+                    nodes: {
+                        borderWidth: 0,
+                        font: { color: '#9ca3af', face: 'JetBrains Mono', size: 14 },
+                        shadow: true
+                    },
+                    edges: {
+                        color: { color: '#ffffff', opacity: 0.1 },
+                        width: 1,
+                        smooth: { type: 'continuous' }
+                    },
+                    physics: {
+                        stabilization: false,
+                        barnesHut: {
+                            gravitationalConstant: -2000,
+                            springConstant: 0.04,
+                            springLength: 95
+                        }
+                    },
+                    interaction: {
+                        dragNodes: true,
+                        zoomView: false,
+                        dragView: false
+                    }
+                };
+
+                networkInstance = new vis.Network(container, data, options);
+            }
+
+            if (toggleSkillBtn) {
+                toggleSkillBtn.addEventListener('click', () => {
+                    isGraphView = !isGraphView;
+                    
+                    if (isGraphView) {
+                        // Show Graph
+                        skillGrid.style.opacity = '0';
+                        skillGrid.style.pointerEvents = 'none';
+                        
+                        skillGraphContainer.style.opacity = '1';
+                        skillGraphContainer.style.pointerEvents = 'auto';
+                        
+                        skillViewLabel.textContent = "Grid View";
+                        
+                        // Init graph if first time
+                        if (!networkInstance) initSkillGraph();
+                    } else {
+                        // Show Grid
+                        skillGrid.style.opacity = '1';
+                        skillGrid.style.pointerEvents = 'auto';
+                        
+                        skillGraphContainer.style.opacity = '0';
+                        skillGraphContainer.style.pointerEvents = 'none';
+                        
+                        skillViewLabel.textContent = "Graph View";
+                    }
+                });
+            }
+
+            /* =========================================
+               FEATURE 3: SECURE COMMS TYPING
+               ========================================= */
+            const msgInput = document.getElementById('contact-message');
+            const securePreview = document.getElementById('secure-preview');
+            
+            if (msgInput && securePreview) {
+                msgInput.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (!val) {
+                        securePreview.textContent = '';
+                        return;
+                    }
+                    
+                    // Show "Encrypting..." state
+                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                    let scrambled = "";
+                    for(let i=0; i<Math.min(val.length, 20); i++) {
+                        scrambled += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    
+                    securePreview.textContent = `ENCRYPTING: ${scrambled}...`;
+                    
+                    // "Decrypt" after pause
+                    clearTimeout(msgInput.decryptTimeout);
+                    msgInput.decryptTimeout = setTimeout(() => {
+                        securePreview.textContent = `VERIFIED: ${val.substring(val.length - 15).padStart(val.length > 15 ? 18 : 0, '...')}`;
+                        securePreview.classList.add('text-emerald-500');
+                        setTimeout(() => securePreview.classList.remove('text-emerald-500'), 200);
+                    }, 300);
+                });
+            }
+
+            /* =========================================
+               FEATURE 4: BOSS MODE (PANIC BUTTON)
+               ========================================= */
+            const bossMode = document.getElementById('boss-mode');
+            const bossTableBody = bossMode.querySelector('tbody');
+            
+            // Generate fake rows
+            for(let i=1; i<=20; i++) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="background:#f3f3f3; text-align:center; color:#666;">${i}</td>
+                    <td>${i === 1 ? 'Q1 Revenue' : Math.floor(Math.random()*10000)}</td>
+                    <td>${i === 1 ? 'Expenses' : Math.floor(Math.random()*5000)}</td>
+                    <td>${i === 1 ? 'Net Profit' : Math.floor(Math.random()*5000)}</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                `;
+                bossTableBody.appendChild(tr);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                // Toggle on F9 or Escape (if boss mode is active)
+                if (e.key === 'F9') {
+                    if (bossMode.style.display === 'block') {
+                        bossMode.style.display = 'none';
+                        document.title = "Portfolio — Muhammad Rakha";
+                    } else {
+                        bossMode.style.display = 'block';
+                        document.title = "Annual_Budget_Report_2025.xlsx - Excel";
+                    }
+                } else if (e.key === 'Escape' && bossMode.style.display === 'block') {
+                    bossMode.style.display = 'none';
+                    document.title = "Portfolio — Muhammad Rakha";
+                }
+            });
+            
+            // Add hint to console
+            console.log("%c TIP: Press F9 for Boss Mode ", "color: #f59e0b; font-size: 12px; background: #000; padding: 4px;");
+
+            /* =========================================
+               NEW FEATURES: HOLO, REDACTED, BRUTE FORCE, STATS
+               ========================================= */
+            
+            // 1. Holo Card Effect
+            const holoCards = document.querySelectorAll('.holo-card');
+            holoCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    
+                    const shine = card.querySelector('.holo-shine');
+                    if (shine) {
+                        shine.style.opacity = '1';
+                        shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, transparent 60%)`;
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                    const shine = card.querySelector('.holo-shine');
+                    if (shine) shine.style.opacity = '0';
+                });
+            });
+
+            // 2. Redacted Toggle (via Context Menu)
+            const ctxMenu = document.getElementById('context-menu');
+            if (ctxMenu) {
+                const hr = ctxMenu.querySelector('.ctx-hr');
+                const toggleItem = document.createElement('div');
+                toggleItem.className = 'ctx-item';
+                toggleItem.innerHTML = '<i data-lucide="eye" class="w-3 h-3"></i> TOGGLE_REDACTED';
+                toggleItem.onclick = () => {
+                    document.body.classList.toggle('redacted-reveal');
+                };
+                ctxMenu.insertBefore(toggleItem, hr);
+            }
+
+            // 3. Brute Force Visualizer
+            const bfInput = document.getElementById('bf-input');
+            const bfBtn = document.getElementById('bf-btn');
+            const bfDisplay = document.getElementById('bf-display');
+            const bfAttempts = document.getElementById('bf-attempts');
+            const bfStatus = document.getElementById('bf-status');
+            
+            if (bfBtn && bfInput) {
+                bfBtn.addEventListener('click', () => {
+                    const target = bfInput.value;
+                    if (!target) return;
+                    
+                    bfStatus.textContent = "CRACKING...";
+                    bfStatus.className = "text-red-500 animate-pulse";
+                    bfDisplay.innerHTML = '';
+                    
+                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+                    let attempts = 0;
+                    let current = "";
+                    let index = 0;
+                    
+                    // Create spans for each char
+                    for(let i=0; i<target.length; i++) {
+                        const span = document.createElement('span');
+                        span.className = 'bf-char';
+                        span.textContent = '*';
+                        bfDisplay.appendChild(span);
+                    }
+                    
+                    const spans = bfDisplay.querySelectorAll('.bf-char');
+                    
+                    const interval = setInterval(() => {
+                        attempts += Math.floor(Math.random() * 1000);
+                        bfAttempts.textContent = attempts.toLocaleString();
+                        
+                        // Randomize remaining chars
+                        for(let i=index; i<target.length; i++) {
+                            spans[i].textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                            spans[i].style.color = '#666';
+                        }
+                        
+                        // Crack current char
+                        if (Math.random() > 0.8) {
+                            spans[index].textContent = target[index];
+                            spans[index].className = 'bf-char bf-cracked';
+                            index++;
+                        }
+                        
+                        if (index >= target.length) {
+                            clearInterval(interval);
+                            bfStatus.textContent = "SUCCESS";
+                            bfStatus.className = "text-emerald-500";
+                        }
+                    }, 50);
+                });
+            }
+
+            // 4. Footer Server Stats
+            const statsCanvas = document.getElementById('server-stats');
+            if (statsCanvas) {
+                const ctx = statsCanvas.getContext('2d');
+                const data = new Array(20).fill(10);
+                
+                function drawStats() {
+                    // Shift data
+                    data.shift();
+                    data.push(Math.random() * 15 + 2); // Random height
+                    
+                    ctx.clearRect(0, 0, 100, 20);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 20 - data[0]);
+                    
+                    for(let i=1; i<data.length; i++) {
+                        ctx.lineTo(i * 5, 20 - data[i]);
+                    }
+                    
+                    ctx.strokeStyle = '#10b981';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    requestAnimationFrame(drawStats);
+                }
+                drawStats();
+            }
+
+            /* =========================================
+               PROJECT DOSSIER LOGIC
+               ========================================= */
+            const dossierModal = document.getElementById('dossier-modal');
+            const dossierContent = document.getElementById('dossier-content');
+            const closeDossierBtn = document.getElementById('close-dossier');
+            const closeDossierBtn2 = document.getElementById('dossier-close-btn');
+            const projectTimeless = document.getElementById('project-timeless');
+
+            function openDossier(data) {
+                // Populate Data
+                document.getElementById('dossier-id').textContent = data.id;
+                document.getElementById('dossier-title').textContent = data.title;
+                document.getElementById('dossier-desc').textContent = data.desc;
+                document.getElementById('dossier-status').textContent = data.status;
+                document.getElementById('dossier-link').href = data.link;
+                
+                // Tech Stack
+                const techContainer = document.getElementById('dossier-tech');
+                techContainer.innerHTML = '';
+                data.tech.forEach(t => {
+                    const tag = document.createElement('span');
+                    tag.className = "px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] text-neutral-400 font-mono";
+                    tag.textContent = t;
+                    techContainer.appendChild(tag);
+                });
+
+                // Show Modal
+                dossierModal.classList.remove('hidden');
+                // Trigger reflow
+                void dossierModal.offsetWidth;
+                dossierModal.classList.remove('opacity-0');
+                dossierContent.classList.remove('scale-95');
+                dossierContent.classList.add('scale-100');
+            }
+
+            function closeDossier() {
+                dossierModal.classList.add('opacity-0');
+                dossierContent.classList.remove('scale-100');
+                dossierContent.classList.add('scale-95');
+                setTimeout(() => {
+                    dossierModal.classList.add('hidden');
+                }, 300);
+            }
+
+            if (projectTimeless) {
+                projectTimeless.addEventListener('click', () => {
+                    openDossier({
+                        id: '#006',
+                        title: 'TimelessProject',
+                        desc: 'Sebuah inisiatif startup yang bergerak di industri kreatif, menggabungkan seni visual dengan teknologi modern. Fokus utama pada pembuatan konten berkualitas tinggi, manajemen talenta, dan kolaborasi lintas disiplin. Proyek ini menggunakan pendekatan "Community-First" untuk membangun ekosistem yang berkelanjutan.',
+                        status: 'ACTIVE / SCALING',
+                        link: 'https://pinkybzz.github.io/Timeless/',
+                        tech: ['React', 'Node.js', 'AWS S3', 'Figma', 'Adobe Creative Cloud']
+                    });
+                });
+            }
+
+            if (closeDossierBtn) closeDossierBtn.addEventListener('click', closeDossier);
+            if (closeDossierBtn2) closeDossierBtn2.addEventListener('click', closeDossier);
+            
+            // Close on background click
+            dossierModal.addEventListener('click', (e) => {
+                if (e.target === dossierModal) closeDossier();
+            });
         });
     </script>
 
@@ -1500,15 +2346,79 @@
 
     <!-- IP Intel Widget -->
     <div id="ip-widget" class="ip-widget reveal-on-scroll">
-        <div class="flex items-center gap-2 mb-2 border-b border-white/10 pb-1">
-            <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <span class="text-xs text-white font-bold tracking-wider">TARGET_ID</span>
+        <div id="ip-header" class="flex items-center justify-between mb-2 border-b border-white/10 pb-1 cursor-pointer group">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                <span class="text-xs text-white font-bold tracking-wider">TARGET_ID</span>
+            </div>
+            <i id="ip-toggle-icon" data-lucide="chevron-down" class="w-3 h-3 text-neutral-500 group-hover:text-white transition-transform duration-300"></i>
         </div>
-        <div class="space-y-1">
+        <div id="ip-content" class="space-y-1 transition-all duration-300 overflow-hidden max-h-40">
             <div><span class="ip-label">IP:</span> <span id="user-ip" class="ip-value">SCANNING...</span></div>
             <div><span class="ip-label">LOC:</span> <span id="user-loc" class="ip-value">UNKNOWN</span></div>
             <div><span class="ip-label">ISP:</span> <span id="user-isp" class="ip-value">UNKNOWN</span></div>
             <div><span class="ip-label">UA:</span> <span id="user-ua" class="ip-value">UNKNOWN</span></div>
+        </div>
+    </div>
+
+    <!-- Project Dossier Modal -->
+    <div id="dossier-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-2xl bg-[#1a1a1a] border border-white/10 rounded-sm shadow-2xl relative overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" id="dossier-content">
+            <!-- Top Secret Stamp -->
+            <div class="absolute top-10 right-10 border-4 border-red-500/20 text-red-500/20 font-black text-4xl px-4 py-2 -rotate-12 pointer-events-none select-none z-0">
+                CONFIDENTIAL
+            </div>
+            
+            <!-- Header -->
+            <div class="bg-neutral-900 p-4 border-b border-white/10 flex justify-between items-center z-10 relative">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="folder-lock" class="w-5 h-5 text-yellow-500"></i>
+                    <span class="font-mono text-sm text-yellow-500 tracking-widest">CASE FILE: <span id="dossier-id" class="text-white">#001</span></span>
+                </div>
+                <button id="close-dossier" class="text-neutral-500 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 md:p-8 z-10 relative">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <div class="w-24 h-24 bg-neutral-800 rounded border border-white/10 flex items-center justify-center flex-shrink-0 self-center md:self-start">
+                        <i id="dossier-icon" data-lucide="rocket" class="w-10 h-10 text-neutral-500"></i>
+                    </div>
+                    <div>
+                        <h2 id="dossier-title" class="text-2xl font-bold text-white mb-2 font-mono">PROJECT NAME</h2>
+                        <div class="flex gap-2 mb-4">
+                            <span class="px-2 py-0.5 bg-red-500/20 text-red-400 text-[10px] font-mono rounded border border-red-500/30">TOP SECRET</span>
+                            <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[10px] font-mono rounded border border-blue-500/30">LEVEL 5 CLEARANCE</span>
+                        </div>
+                        <p id="dossier-desc" class="text-neutral-400 text-sm leading-relaxed">Project description goes here...</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xs font-mono text-neutral-500 mb-2 uppercase">Technical Specifications</h3>
+                        <div id="dossier-tech" class="flex flex-wrap gap-2">
+                            <!-- Tech tags injected here -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-black/30 p-4 rounded border border-white/5 font-mono text-xs text-green-500/80">
+                        > STATUS: <span id="dossier-status" class="text-white">ACTIVE</span><br>
+                        > SECURITY_AUDIT: <span class="text-emerald-500">PASSED</span><br>
+                        > LAST_UPDATE: <span class="text-white">2025-12-01</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-neutral-900 p-4 border-t border-white/10 flex justify-end gap-3 z-10 relative">
+                <button id="dossier-close-btn" class="px-4 py-2 rounded text-xs font-medium text-neutral-400 hover:text-white transition-colors">CLOSE FILE</button>
+                <a id="dossier-link" href="#" target="_blank" class="px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-colors flex items-center gap-2">
+                    ACCESS PROJECT <i data-lucide="external-link" class="w-3 h-3"></i>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1525,6 +2435,8 @@
         <div id="clock" class="w-16 text-center">00:00:00</div>
         <div class="h-3 w-px bg-white/10"></div>
         <div class="w-16 text-right">LAT: <span id="latency" class="text-emerald-400">24ms</span></div>
+        <div class="h-3 w-px bg-white/10"></div>
+        <div id="flag-counter" class="text-yellow-500 font-bold tracking-wider cursor-help" title="Find hidden flags!">FLAGS: 0/3</div>
     </div>
 </body>
 </html>
