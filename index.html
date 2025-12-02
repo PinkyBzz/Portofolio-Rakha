@@ -605,10 +605,32 @@
             background: #0a0a0a;
             border: 1px solid #333;
             border-radius: 8px;
-            overflow: hidden;
+            overflow-x: auto; /* Changed to auto for mobile responsiveness */
             position: relative;
             font-family: 'Courier New', monospace;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #0a0a0a;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+            max-width: 100%;
+            display: block;
         }
+        .sequencer-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+        .sequencer-wrapper::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .sequencer-wrapper::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        
+        /* Ensure timeline maintains structure on small screens */
+        .seq-header, .seq-body {
+            min-width: 700px;
+        }
+
         .seq-header {
             display: flex;
             height: 24px;
@@ -686,7 +708,8 @@
         }
     </style>
 </head>
-<body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative overflow-hidden">
+<body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
+    
     <!-- Boss Mode Overlay -->
     <div id="boss-mode">
         <div class="excel-header">
@@ -736,12 +759,12 @@
         <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
             <a href="#" class="text-white font-medium tracking-tight text-sm hover:text-neutral-300 transition-colors flex items-center gap-2">
                 <img src="M. Rakha.jpg" alt="Rakha" class="w-6 h-6 rounded-full object-cover">
-                Muhammad Rakha.
+                Rakha
             </a>
-            <div class="flex items-center gap-6">
-                <a href="#achievements" class="text-xs font-medium hover:text-white transition-colors">Prestasi</a>
-                <a href="#skills" class="text-xs font-medium hover:text-white transition-colors">Keahlian</a>
-                <a href="#contact" class="text-xs font-medium hover:text-white transition-colors">Kontak</a>
+            <div class="flex items-center gap-3 md:gap-6">
+                <a href="#achievements" class="text-xs font-medium hover:text-white transition-colors hidden md:block">Prestasi</a>
+                <a href="#skills" class="text-xs font-medium hover:text-white transition-colors hidden md:block">Keahlian</a>
+                <a href="#contact" class="text-xs font-medium hover:text-white transition-colors hidden md:block">Kontak</a>
                 <button onclick="activateMatrixMode()" class="text-xs font-medium text-neutral-500 hover:text-green-500 transition-colors" title="Toggle Matrix Mode">
                     <i data-lucide="binary" class="w-4 h-4"></i>
                 </button>
@@ -788,9 +811,6 @@
                 </div>
                 
                 <div class="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0 group">
-                    <!-- 3D Object Container -->
-                    <div id="hero-3d" class="absolute inset-[-100px] z-0 opacity-100 pointer-events-none"></div>
-                    
                     <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-2xl hidden"></div>
                     <img src="M. Rakha.jpg" alt="Rakha" class="relative w-full h-full object-cover rounded-full border-2 border-white/10 shadow-2xl z-10">
                 </div>
@@ -1205,9 +1225,15 @@
 
             <!-- Education Section (Sequencer Style) -->
             <section id="education" class="border-t border-white/10 pt-16">
-                <h2 class="text-2xl font-medium text-white tracking-tight mb-8 reveal-on-scroll hacker-text" data-value="Pendidikan & Timeline">Pendidikan & Timeline</h2>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 reveal-on-scroll">
+                    <h2 class="text-2xl font-medium text-white tracking-tight hacker-text" data-value="Pendidikan & Timeline">Pendidikan & Timeline</h2>
+                    <button id="edu-toggle-btn" class="px-3 py-1 text-xs font-mono border border-white/20 rounded hover:bg-white/10 transition-colors text-neutral-400 flex items-center gap-2">
+                        <i data-lucide="list" class="w-3 h-3"></i> SWITCH VIEW
+                    </button>
+                </div>
                 
-                <div class="sequencer-wrapper reveal-on-scroll">
+                <!-- View 1: Sequencer (Complex) -->
+                <div id="education-sequencer" class="sequencer-wrapper reveal-on-scroll">
                     <div class="seq-header">
                         <div class="w-[120px] border-right border-[#333] bg-[#151515]"></div>
                         <div class="seq-ruler">
@@ -1275,6 +1301,47 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- View 2: Simple List (Simple) -->
+                <div id="education-simple" class="hidden reveal-on-scroll space-y-6">
+                    <div class="border-l-2 border-white/10 pl-6 ml-2 space-y-8">
+                        <!-- Item -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-neutral-900 border-2 border-blue-500"></div>
+                            <span class="text-xs font-mono text-blue-400 mb-1 block">2014 - 2020</span>
+                            <h3 class="text-white font-medium">SD Perguruan Rakyat 3</h3>
+                            <p class="text-sm text-neutral-500">Pendidikan Dasar</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-neutral-900 border-2 border-blue-500"></div>
+                            <span class="text-xs font-mono text-blue-400 mb-1 block">2020 - 2023</span>
+                            <h3 class="text-white font-medium">SMPN 97 Jakarta</h3>
+                            <p class="text-sm text-neutral-500">Pendidikan Menengah Pertama</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-neutral-900 border-2 border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                            <span class="text-xs font-mono text-emerald-400 mb-1 block">2023 - Sekarang</span>
+                            <h3 class="text-white font-medium">SMKN 40 Jakarta</h3>
+                            <p class="text-sm text-neutral-500">Rekayasa Perangkat Lunak (RPL)</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-neutral-900 border-2 border-yellow-500"></div>
+                            <span class="text-xs font-mono text-yellow-400 mb-1 block">2023</span>
+                            <h3 class="text-white font-medium">Prestasi LKS Cyber Security</h3>
+                            <p class="text-sm text-neutral-500">Juara 1 Wilayah, Juara 1 Provinsi, Medali Perunggu Nasional</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-neutral-900 border-2 border-purple-500"></div>
+                            <span class="text-xs font-mono text-purple-400 mb-1 block">2024 - Present</span>
+                            <h3 class="text-white font-medium">Freelance & Timeless Project</h3>
+                            <p class="text-sm text-neutral-500">Web Development & Creative Projects</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Contact Section -->
@@ -1332,7 +1399,10 @@
             <footer class="flex flex-col md:flex-row justify-between items-center text-xs text-neutral-600 pt-8 gap-4">
                 <div class="flex flex-col gap-1">
                     <p>&copy; 2025 Muhammad Rakha. All rights reserved.</p>
-                    <p class="text-[10px] text-neutral-700 font-mono cursor-help" title="Try the Konami Code!">HINT: ↑↑↓↓←→←→BA</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-500 font-mono">></span>
+                        <input type="text" id="footer-terminal" class="bg-transparent border-none text-neutral-500 font-mono text-[10px] focus:outline-none w-32 placeholder-neutral-700" placeholder="type 'help'...">
+                    </div>
                 </div>
                 <!-- CTF FLAG 1: CTF{H7ML_H1DD3N_G3M} -->
                 <div class="flex items-center gap-4">
@@ -1345,6 +1415,65 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Footer Terminal
+            const termInput = document.getElementById('footer-terminal');
+            if (termInput) {
+                termInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = termInput.value.toLowerCase().trim();
+                        termInput.value = '';
+                        
+                        if (typeof playUiSound === 'function') playUiSound('keypress');
+
+                        if (cmd === 'help') {
+                            alert("Available commands: help, clear, matrix, contact, about, home");
+                        } else if (cmd === 'matrix') {
+                            if (typeof activateMatrixMode === 'function') activateMatrixMode();
+                        } else if (cmd === 'contact') {
+                            document.getElementById('contact').scrollIntoView({behavior: 'smooth'});
+                        } else if (cmd === 'about') {
+                            document.getElementById('about').scrollIntoView({behavior: 'smooth'});
+                        } else if (cmd === 'home') {
+                            window.scrollTo({top: 0, behavior: 'smooth'});
+                        } else if (cmd === 'clear') {
+                            // do nothing
+                        } else {
+                            // Shake effect
+                            termInput.classList.add('text-red-500');
+                            setTimeout(() => termInput.classList.remove('text-red-500'), 500);
+                        }
+                    }
+                });
+            }
+
+            // Education Toggle Logic
+            const eduToggleBtn = document.getElementById('edu-toggle-btn');
+            const eduSequencer = document.getElementById('education-sequencer');
+            const eduSimple = document.getElementById('education-simple');
+            
+            if (eduToggleBtn && eduSequencer && eduSimple) {
+                eduToggleBtn.addEventListener('click', () => {
+                    if (typeof playUiSound === 'function') playUiSound('click');
+                    
+                    const isSimple = eduSequencer.classList.contains('hidden');
+                    
+                    if (isSimple) {
+                        // Switch to Sequencer
+                        eduSequencer.classList.remove('hidden');
+                        eduSimple.classList.add('hidden');
+                        eduToggleBtn.innerHTML = '<i data-lucide="list" class="w-3 h-3 inline mr-1"></i> SWITCH VIEW';
+                    } else {
+                        // Switch to Simple
+                        eduSequencer.classList.add('hidden');
+                        eduSimple.classList.remove('hidden');
+                        eduToggleBtn.innerHTML = '<i data-lucide="activity" class="w-3 h-3 inline mr-1"></i> SWITCH VIEW';
+                    }
+                    
+                    // Re-init icons
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                });
+            }
+
             // WhatsApp Logic
             const sendBtn = document.getElementById('send-whatsapp-btn');
             if (sendBtn) {
@@ -1716,53 +1845,6 @@
                 contextMenu.style.display = 'none';
             });
 
-            // --- IP INTEL WIDGET ---
-            async function fetchIPIntel() {
-                const widget = document.getElementById('ip-widget');
-                const header = document.getElementById('ip-header');
-                const ipEl = document.getElementById('user-ip');
-                const locEl = document.getElementById('user-loc');
-                const ispEl = document.getElementById('user-isp');
-                const uaEl = document.getElementById('user-ua');
-
-                // Toggle Minimize
-                if (header) {
-                    header.addEventListener('click', () => {
-                        widget.classList.toggle('minimized');
-                    });
-                }
-
-                // Show widget
-                widget.style.display = 'block';
-                
-                // Re-init icons for the new chevron
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-
-                // Set User Agent immediately
-                const platform = navigator.platform;
-                uaEl.textContent = platform;
-
-                try {
-                    const response = await fetch('https://ipapi.co/json/');
-                    const data = await response.json();
-                    
-                    // Simulate "Scanning" delay for effect
-                    setTimeout(() => {
-                        ipEl.textContent = data.ip;
-                        locEl.textContent = `${data.city}, ${data.country_code}`;
-                        ispEl.textContent = data.org;
-                    }, 1000);
-                } catch (error) {
-                    ipEl.textContent = "HIDDEN";
-                    locEl.textContent = "UNKNOWN";
-                }
-            }
-            
-            // Call after a slight delay
-            setTimeout(fetchIPIntel, 2000);
-
             // --- OSIS ARCHIVE LOGIC (GROUPED & ANIMATED) ---
             const osisSlides = [
                 { 
@@ -2115,79 +2197,6 @@
                     showDots: false        // Hide dots to save performance
                 });
             }
-
-            // Initialize Custom 3D Object (Hero Section)
-            function initHero3D() {
-                const container = document.getElementById('hero-3d');
-                if (!container) return;
-
-                // Ensure container has dimensions
-                let width = container.clientWidth;
-                let height = container.clientHeight;
-
-                if (width === 0 || height === 0) {
-                    // Fallback if inset hasn't calculated yet
-                    width = 350; 
-                    height = 350;
-                }
-
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                
-                renderer.setSize(width, height);
-                container.appendChild(renderer.domElement);
-
-                // Create Geometry (Icosahedron - Cyber Core)
-                const geometry = new THREE.IcosahedronGeometry(4.0, 0);
-                const material = new THREE.MeshBasicMaterial({ 
-                    color: 0x10b981, 
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.3
-                });
-                const sphere = new THREE.Mesh(geometry, material);
-                scene.add(sphere);
-
-                // Inner Core
-                const innerGeo = new THREE.IcosahedronGeometry(2.5, 1);
-                const innerMat = new THREE.MeshBasicMaterial({
-                    color: 0x3b82f6, // Blue
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.5
-                });
-                const innerSphere = new THREE.Mesh(innerGeo, innerMat);
-                scene.add(innerSphere);
-
-                camera.position.z = 5;
-
-                // Animation Loop
-                function animate() {
-                    requestAnimationFrame(animate);
-                    
-                    sphere.rotation.x += 0.002;
-                    sphere.rotation.y += 0.002;
-                    
-                    innerSphere.rotation.x -= 0.005;
-                    innerSphere.rotation.y -= 0.005;
-
-                    renderer.render(scene, camera);
-                }
-                animate();
-
-                // Handle Resize
-                window.addEventListener('resize', () => {
-                    const newWidth = container.clientWidth || 350;
-                    const newHeight = container.clientHeight || 350;
-                    camera.aspect = newWidth / newHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(newWidth, newHeight);
-                });
-            }
-            
-            // Delay 3D init slightly to ensure layout is ready
-            setTimeout(initHero3D, 100);
 
             let isAnimating = false;
 
@@ -2980,234 +2989,6 @@
             });
 
             /* =========================================
-               CYBER DEFENSE GAME LOGIC
-               ========================================= */
-            const startGameBtn = document.getElementById('start-game-btn');
-            const gameOverlay = document.getElementById('defense-game-overlay');
-            const gameArea = document.getElementById('game-area');
-            const gameScoreEl = document.getElementById('game-score');
-            const gameHealthEl = document.getElementById('game-health');
-            const gameOverScreen = document.getElementById('game-over-screen');
-            const finalScoreEl = document.getElementById('final-score');
-            const restartGameBtn = document.getElementById('restart-game-btn');
-            const closeGameBtn = document.getElementById('close-game-btn');
-            const quitGameBtn = document.getElementById('quit-game-btn');
-
-            let gameActive = false;
-            let score = 0;
-            let health = 100;
-            let words = [];
-            let spawnRate = 2000;
-            let lastSpawn = 0;
-            let animationFrame;
-            
-            const threatWords = [
-                "MALWARE", "TROJAN", "PHISHING", "DDOS", "SQL_INJECTION", 
-                "RANSOMWARE", "SPYWARE", "BOTNET", "EXPLOIT", "ZERO_DAY",
-                "BRUTE_FORCE", "ROOTKIT", "BACKDOOR", "WORM", "KEYLOGGER"
-            ];
-
-            function spawnWord() {
-                const wordText = threatWords[Math.floor(Math.random() * threatWords.length)];
-                const x = Math.random() * (window.innerWidth - 100);
-                const word = {
-                    text: wordText,
-                    x: x,
-                    y: -30,
-                    element: document.createElement('div'),
-                    matchedIndex: 0
-                };
-                
-                word.element.className = 'falling-word';
-                word.element.textContent = wordText;
-                word.element.style.left = `${x}px`;
-                gameArea.appendChild(word.element);
-                words.push(word);
-            }
-
-            function updateGame(timestamp) {
-                if (!gameActive) return;
-
-                if (timestamp - lastSpawn > spawnRate) {
-                    spawnWord();
-                    lastSpawn = timestamp;
-                    if (spawnRate > 500) spawnRate -= 20; // Increase difficulty
-                }
-
-                words.forEach((word, index) => {
-                    word.y += 1 + (score / 500); // Speed increases with score
-                    word.element.style.top = `${word.y}px`;
-
-                    if (word.y > window.innerHeight) {
-                        // Missed word
-                        health -= 10;
-                        gameHealthEl.textContent = `${health}%`;
-                        gameHealthEl.style.color = health < 30 ? '#ef4444' : '#10b981';
-                        gameArea.removeChild(word.element);
-                        words.splice(index, 1);
-                        
-                        // Screen shake effect
-                        gameOverlay.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
-                        setTimeout(() => gameOverlay.style.transform = 'none', 50);
-
-                        if (health <= 0) endGame();
-                    }
-                });
-
-                animationFrame = requestAnimationFrame(updateGame);
-            }
-
-            function endGame() {
-                gameActive = false;
-                cancelAnimationFrame(animationFrame);
-                gameOverScreen.classList.remove('hidden');
-                finalScoreEl.textContent = score;
-            }
-
-            function resetGame() {
-                score = 0;
-                health = 100;
-                spawnRate = 2000;
-                words.forEach(w => gameArea.removeChild(w.element));
-                words = [];
-                gameScoreEl.textContent = score;
-                gameHealthEl.textContent = "100%";
-                gameHealthEl.style.color = '#10b981';
-                gameOverScreen.classList.add('hidden');
-                gameActive = true;
-                lastSpawn = performance.now();
-                requestAnimationFrame(updateGame);
-            }
-
-            if (startGameBtn) {
-                startGameBtn.addEventListener('click', () => {
-                    gameOverlay.style.display = 'flex';
-                    resetGame();
-                });
-            }
-
-            if (restartGameBtn) restartGameBtn.addEventListener('click', resetGame);
-            
-            if (closeGameBtn) {
-                closeGameBtn.addEventListener('click', () => {
-                    gameOverlay.style.display = 'none';
-                    gameActive = false;
-                });
-            }
-            
-            if (quitGameBtn) {
-                quitGameBtn.addEventListener('click', () => {
-                    gameOverlay.style.display = 'none';
-                    gameActive = false;
-                });
-            }
-
-            // Typing Logic
-            document.addEventListener('keydown', (e) => {
-                if (!gameActive) return;
-                
-                const key = e.key.toUpperCase();
-                let matchFound = false;
-
-                // Find matching words
-                for (let i = 0; i < words.length; i++) {
-                    const word = words[i];
-                    const targetChar = word.text[word.matchedIndex];
-                    
-                    if (key === targetChar) {
-                        word.matchedIndex++;
-                        const matched = word.text.substring(0, word.matchedIndex);
-                        const remaining = word.text.substring(word.matchedIndex);
-                        word.element.innerHTML = `<span class="matched-part">${matched}</span>${remaining}`;
-                        
-                        if (word.matchedIndex === word.text.length) {
-                            // Word completed
-                            score += 100;
-                            gameScoreEl.textContent = score;
-                            gameArea.removeChild(word.element);
-                            words.splice(i, 1);
-                            
-                            // Visual feedback
-                            const flash = document.createElement('div');
-                            flash.style.position = 'absolute';
-                            flash.style.left = word.element.style.left;
-                            flash.style.top = word.element.style.top;
-                            flash.style.color = '#10b981';
-                            flash.style.fontWeight = 'bold';
-                            flash.textContent = '+100';
-                            gameArea.appendChild(flash);
-                            setTimeout(() => gameArea.removeChild(flash), 500);
-                        }
-                        matchFound = true;
-                        break; // Only type one letter per keypress (prevent multi-match)
-                    }
-                }
-            });
-
-            /* =========================================
-               VOICE COMMAND LOGIC
-               ========================================= */
-            const voiceBtn = document.getElementById('voice-cmd-btn');
-            
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
-                
-                recognition.continuous = false;
-                recognition.lang = 'en-US';
-                recognition.interimResults = false;
-
-                voiceBtn.addEventListener('click', () => {
-                    try {
-                        recognition.start();
-                        voiceBtn.classList.add('listening');
-                    } catch (e) {
-                        console.log("Recognition already started");
-                    }
-                });
-
-                recognition.onend = () => {
-                    voiceBtn.classList.remove('listening');
-                };
-
-                recognition.onresult = (event) => {
-                    const command = event.results[0][0].transcript.toLowerCase();
-                    console.log("Voice Command:", command);
-                    
-                    // Visual Feedback
-                    const feedback = document.createElement('div');
-                    feedback.className = "fixed bottom-24 right-24 bg-black/80 text-green-500 px-4 py-2 rounded border border-green-500/50 font-mono text-xs z-50";
-                    feedback.textContent = `> CMD: "${command}"`;
-                    document.body.appendChild(feedback);
-                    setTimeout(() => document.body.removeChild(feedback), 3000);
-
-                    // Command Parsing
-                    if (command.includes('terminal')) {
-                        openTerminal();
-                    } else if (command.includes('close')) {
-                        closeTerminal();
-                        closeDossier();
-                    } else if (command.includes('scroll down')) {
-                        window.scrollBy({ top: 500, behavior: 'smooth' });
-                    } else if (command.includes('scroll up')) {
-                        window.scrollBy({ top: -500, behavior: 'smooth' });
-                    } else if (command.includes('matrix')) {
-                        activateMatrixMode();
-                    } else if (command.includes('reload') || command.includes('refresh')) {
-                        location.reload();
-                    } else if (command.includes('defense') || command.includes('game')) {
-                        if (startGameBtn) startGameBtn.click();
-                    } else if (command.includes('projects')) {
-                        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-                    } else if (command.includes('skills')) {
-                        document.getElementById('skills').scrollIntoView({ behavior: 'smooth' });
-                    }
-                };
-            } else {
-                voiceBtn.style.display = 'none';
-                console.log("Web Speech API not supported");
-            }
-            /* =========================================
                SONIC SYNTH LOGIC (Web Audio API)
                ========================================= */
             const synthBtns = document.querySelectorAll('.synth-btn');
@@ -3322,74 +3103,6 @@
                     setTimeout(() => btn.classList.remove('active'), 100);
                 });
             });
-
-            /* =========================================
-               3D CYBER GLOBE (HERO SECTION)
-               ========================================= */
-            function initHero3D() {
-                const container = document.getElementById('hero-3d');
-                if (!container) return;
-
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                
-                renderer.setSize(container.clientWidth, container.clientHeight);
-                container.appendChild(renderer.domElement);
-
-                // Create Wireframe Sphere
-                const geometry = new THREE.IcosahedronGeometry(1.5, 2);
-                const material = new THREE.MeshBasicMaterial({ 
-                    color: 0x10b981, 
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.3
-                });
-                const sphere = new THREE.Mesh(geometry, material);
-                scene.add(sphere);
-
-                // Create Particles
-                const particlesGeometry = new THREE.BufferGeometry();
-                const particlesCount = 200;
-                const posArray = new Float32Array(particlesCount * 3);
-
-                for(let i = 0; i < particlesCount * 3; i++) {
-                    posArray[i] = (Math.random() - 0.5) * 5;
-                }
-
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-                const particlesMaterial = new THREE.PointsMaterial({
-                    size: 0.02,
-                    color: 0x3b82f6,
-                    transparent: true,
-                    opacity: 0.8
-                });
-                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-                scene.add(particlesMesh);
-
-                camera.position.z = 3;
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    sphere.rotation.x += 0.002;
-                    sphere.rotation.y += 0.002;
-                    particlesMesh.rotation.y -= 0.001;
-                    renderer.render(scene, camera);
-                }
-                animate();
-
-                // Handle Resize
-                window.addEventListener('resize', () => {
-                    if (container.clientWidth > 0 && container.clientHeight > 0) {
-                        camera.aspect = container.clientWidth / container.clientHeight;
-                        camera.updateProjectionMatrix();
-                        renderer.setSize(container.clientWidth, container.clientHeight);
-                    }
-                });
-            }
-            
-            // Delay init to ensure container has size
-            setTimeout(initHero3D, 1000);
 
             /* =========================================
                UI SOUND EFFECTS (SFX)
@@ -3565,23 +3278,6 @@
         </div>
     </div>
 
-    <!-- IP Intel Widget -->
-    <div id="ip-widget" class="ip-widget reveal-on-scroll">
-        <div id="ip-header" class="flex items-center justify-between mb-2 border-b border-white/10 pb-1 cursor-pointer group">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                <span class="text-xs text-white font-bold tracking-wider">TARGET_ID</span>
-            </div>
-            <i id="ip-toggle-icon" data-lucide="chevron-down" class="w-3 h-3 text-neutral-500 group-hover:text-white transition-transform duration-300"></i>
-        </div>
-        <div id="ip-content" class="space-y-1 transition-all duration-300 overflow-hidden max-h-40">
-            <div><span class="ip-label">IP:</span> <span id="user-ip" class="ip-value">SCANNING...</span></div>
-            <div><span class="ip-label">LOC:</span> <span id="user-loc" class="ip-value">UNKNOWN</span></div>
-            <div><span class="ip-label">ISP:</span> <span id="user-isp" class="ip-value">UNKNOWN</span></div>
-            <div><span class="ip-label">UA:</span> <span id="user-ua" class="ip-value">UNKNOWN</span></div>
-        </div>
-    </div>
-
     <!-- Project Dossier Modal -->
     <div id="dossier-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="w-full max-w-2xl bg-[#1a1a1a] border border-white/10 rounded-sm shadow-2xl relative overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" id="dossier-content">
@@ -3659,36 +3355,7 @@
         <div class="h-3 w-px bg-white/10"></div>
         <div id="flag-counter" class="text-yellow-500 font-bold tracking-wider cursor-help" title="Find hidden flags!">FLAGS: 0/3</div>
     </div>
-    <!-- Voice Command Button -->
-    <div id="voice-cmd-btn" title="Voice Command (Beta)">
-        <i data-lucide="mic" class="w-6 h-6"></i>
-    </div>
 
-    <!-- Cyber Defense Game Overlay -->
-    <div id="defense-game-overlay">
-        <div class="absolute top-10 left-0 right-0 text-center pointer-events-none">
-            <h2 class="text-3xl text-white font-bold tracking-widest mb-2">SYSTEM UNDER ATTACK</h2>
-            <p class="text-blue-400 font-mono text-sm">TYPE THE WORDS TO NEUTRALIZE THREATS</p>
-        </div>
-        
-        <div class="absolute top-10 right-10 text-right font-mono">
-            <div class="text-white text-xl">SCORE: <span id="game-score" class="text-green-500">0</span></div>
-            <div class="text-white text-sm">INTEGRITY: <span id="game-health" class="text-green-500">100%</span></div>
-        </div>
-
-        <div id="game-area" class="w-full h-full relative"></div>
-
-        <div id="game-over-screen" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center hidden z-50">
-            <h2 class="text-5xl text-red-500 font-bold mb-4">SYSTEM COMPROMISED</h2>
-            <p class="text-white font-mono mb-8">FINAL SCORE: <span id="final-score">0</span></p>
-            <button id="restart-game-btn" class="px-8 py-3 bg-white text-black font-bold tracking-widest hover:bg-gray-200 transition-colors rounded">REBOOT SYSTEM</button>
-            <button id="close-game-btn" class="mt-4 text-neutral-500 hover:text-white text-sm underline">EXIT TO DESKTOP</button>
-        </div>
-        
-        <button id="quit-game-btn" class="absolute top-10 left-10 text-neutral-500 hover:text-white z-50">
-            <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
-    </div>
 </body>
 </html>
 
