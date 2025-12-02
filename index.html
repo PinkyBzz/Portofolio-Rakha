@@ -28,8 +28,13 @@
                         'bar-2': 'bar 1.5s ease-in-out infinite',
                         'bar-3': 'bar 1.1s ease-in-out infinite',
                         'bar-4': 'bar 1.3s ease-in-out infinite',
+                        'scan': 'scan 2s linear infinite',
                     },
                     keyframes: {
+                        scan: {
+                            '0%': { top: '-50%' },
+                            '100%': { top: '150%' },
+                        },
                         bar: {
                             '0%, 100%': { height: '20%' },
                             '50%': { height: '80%' },
@@ -441,6 +446,244 @@
             text-shadow: 0 0 5px #10b981;
             font-weight: bold;
         }
+
+        /* Feature: ASCII Mirror */
+        #ascii-container {
+            font-family: 'Courier New', monospace;
+            font-size: 5px; /* Ultra tiny font */
+            line-height: 4px;
+            white-space: pre;
+            overflow: hidden;
+            color: #10b981;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            transform: scaleX(-1); /* Mirror effect */
+        }
+
+        /* Feature: Voice Command */
+        #voice-cmd-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 24px;
+            z-index: 49;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #10b981;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        #voice-cmd-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+        #voice-cmd-btn.listening {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+            animation: pulse-listening 1.5s infinite;
+        }
+        @keyframes pulse-listening {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        /* Feature: Cyber Defense Game */
+        #defense-game-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.98);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        .falling-word {
+            position: absolute;
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 0 5px #ef4444;
+            white-space: nowrap;
+        }
+        .matched-part {
+            color: #10b981;
+            text-shadow: 0 0 5px #10b981;
+        }
+
+        /* Feature: Sonic Synth Pad */
+        .synth-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            height: 100%;
+        }
+        .synth-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.1s;
+            position: relative;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: monospace;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .synth-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .synth-btn:active, .synth-btn.active {
+            transform: scale(0.95);
+            background: rgba(168, 85, 247, 0.2); /* Purple tint */
+            border-color: #a855f7;
+            color: #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Feature: Holographic ID */
+        .holo-id-wrapper {
+            perspective: 1000px;
+            height: 100%;
+        }
+        .holo-id-card {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+            position: relative;
+        }
+        .holo-layer {
+            position: absolute;
+            inset: 0;
+            border-radius: 0.75rem;
+        }
+        .holo-content {
+            transform: translateZ(30px);
+        }
+        .holo-bg {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateZ(0px);
+        }
+        .holo-glare {
+            background: linear-gradient(125deg, transparent 0%, rgba(255,255,255,0.4) 45%, transparent 60%);
+            transform: translateZ(50px);
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+        .holo-chip {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        /* Feature: Sequencer Timeline */
+        .sequencer-wrapper {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+        .seq-header {
+            display: flex;
+            height: 24px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .seq-ruler {
+            flex: 1;
+            display: flex;
+        }
+        .seq-marker {
+            flex: 1;
+            border-right: 1px solid #333;
+            font-size: 10px;
+            color: #555;
+            padding-left: 4px;
+            line-height: 24px;
+        }
+        .seq-body {
+            position: relative;
+        }
+        .seq-track {
+            display: flex;
+            height: 50px;
+            border-bottom: 1px solid #222;
+        }
+        .seq-track-info {
+            width: 120px;
+            background: #151515;
+            border-right: 1px solid #333;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 11px;
+            color: #888;
+            flex-shrink: 0;
+        }
+        .seq-track-lane {
+            flex: 1;
+            position: relative;
+            background: repeating-linear-gradient(90deg, transparent, transparent 19.5%, #222 20%);
+        }
+        .seq-clip {
+            position: absolute;
+            top: 8px;
+            bottom: 8px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 10px;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .seq-clip:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        .seq-playhead {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #ef4444;
+            z-index: 50;
+            pointer-events: none;
+            box-shadow: 0 0 8px #ef4444;
+        }
     </style>
 </head>
 <body class="text-neutral-400 font-sans antialiased selection:bg-neutral-800 selection:text-white min-h-screen flex flex-col relative overflow-hidden">
@@ -484,6 +727,9 @@
 
     <!-- Vanta Background -->
     <div id="vanta-bg" class="fixed inset-0 -z-10 opacity-30 pointer-events-none"></div>
+    
+    <!-- Matrix Rain Canvas (Hidden by default) -->
+    <canvas id="matrix-canvas" class="fixed inset-0 -z-5 opacity-0 pointer-events-none transition-opacity duration-1000"></canvas>
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-neutral-950/80 backdrop-blur-md">
@@ -496,6 +742,9 @@
                 <a href="#achievements" class="text-xs font-medium hover:text-white transition-colors">Prestasi</a>
                 <a href="#skills" class="text-xs font-medium hover:text-white transition-colors">Keahlian</a>
                 <a href="#contact" class="text-xs font-medium hover:text-white transition-colors">Kontak</a>
+                <button onclick="activateMatrixMode()" class="text-xs font-medium text-neutral-500 hover:text-green-500 transition-colors" title="Toggle Matrix Mode">
+                    <i data-lucide="binary" class="w-4 h-4"></i>
+                </button>
                 <button id="open-cmd-btn" class="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition-colors flex items-center gap-1 border border-emerald-500/30 px-2 py-1 rounded hover:bg-emerald-500/10">
                     <i data-lucide="terminal" class="w-3 h-3"></i> CMD
                 </button>
@@ -550,40 +799,93 @@
             <!-- Bento Grid (Prestasi & Keahlian) -->
             <section id="achievements" class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
                 
-                <!-- Card 1: Main Achievement (LKS) - HOLO EFFECT -->
-                <div id="lks-card" class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 row-span-2 relative overflow-hidden flex flex-col justify-between reveal-on-scroll holo-card">
+                <!-- Card 1: Profile Holo Card -->
+                <div id="holo-card" class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 row-span-2 relative overflow-hidden flex flex-col justify-between reveal-on-scroll holo-card">
                     <div class="holo-shine"></div>
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <!-- Background Grid -->
+                    <div class="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    <div class="relative z-10 holo-content">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2 bg-white/5 rounded-lg border border-white/10">
-                                <i data-lucide="trophy" class="w-5 h-5 text-yellow-500"></i>
+                    <div class="relative z-10 holo-content h-full flex flex-col">
+                        <!-- Header -->
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex gap-4 items-center">
+                                <div class="w-16 h-16 rounded-full border-2 border-emerald-500/50 p-1 relative group-hover:scale-105 transition-transform duration-500">
+                                    <img src="M. Rakha.jpg" alt="Profile" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-black rounded-full animate-pulse"></div>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white tracking-tight">M. RAKHA</h2>
+                                    <div class="flex items-center gap-2 text-xs font-mono text-emerald-400/80">
+                                        <span>ID: 8492-01</span>
+                                        <span>•</span>
+                                        <span>NETSEC_DIV</span>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="text-xs font-mono text-neutral-500">LKS Cyber Security</span>
+                            <i data-lucide="qr-code" class="w-8 h-8 text-white/20 group-hover:text-emerald-500/50 transition-colors"></i>
                         </div>
-                        <h3 class="text-xl font-medium text-white mb-2 tracking-tight hacker-text" data-value="Juara 1 Provinsi DKI Jakarta">Juara 1 Provinsi DKI Jakarta</h3>
-                        <p class="text-sm text-neutral-500 leading-relaxed mb-6">
-                            Kompetisi berfokus pada analisis kerentanan, hardening, dan praktik incident response. Meraih Juara 1 tingkat Wilayah & Provinsi, serta Medali Perunggu tingkat Nasional.
-                        </p>
-                    </div>
+                        
+                        <!-- Middle: Achievement Log -->
+                        <div class="flex-1 flex flex-col justify-center gap-3 mb-4 relative z-20">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="h-px flex-1 bg-gradient-to-r from-transparent to-emerald-500/50"></div>
+                                <span class="text-[10px] font-mono text-emerald-500 tracking-widest uppercase">Achievement Log</span>
+                                <div class="h-px flex-1 bg-gradient-to-l from-transparent to-emerald-500/50"></div>
+                            </div>
 
-                    <!-- Mock Code Window / Terminal for LKS -->
-                    <div class="relative w-full bg-neutral-900 rounded-lg border border-white/10 p-4 font-mono text-xs overflow-hidden shadow-2xl group-hover:translate-y-[-4px] transition-transform duration-500 holo-content">
-                        <div class="flex gap-1.5 mb-3">
-                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                            <!-- Achievement 1 -->
+                            <div class="flex items-center gap-3 p-2 rounded bg-white/5 border border-white/5 hover:bg-white/10 hover:border-emerald-500/30 transition-all group/item">
+                                <div class="w-8 h-8 rounded bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 group-hover/item:border-yellow-500/50">
+                                    <i data-lucide="trophy" class="w-4 h-4 text-yellow-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">JUARA 1 Wilayah</h4>
+                                    <p class="text-[10px] text-neutral-400 font-mono">LKS Wilayah Cyber Security</p>
+                                </div>
+                            </div>
+
+                            <!-- Achievement 2 -->
+                            <div class="flex items-center gap-3 p-2 rounded bg-white/5 border border-white/5 hover:bg-white/10 hover:border-emerald-500/30 transition-all group/item">
+                                <div class="w-8 h-8 rounded bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 group-hover/item:border-yellow-500/50">
+                                    <i data-lucide="medal" class="w-4 h-4 text-yellow-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">JUARA 1 Provinsi</h4>
+                                    <p class="text-[10px] text-neutral-400 font-mono">LKS Provinsi Cyber Security JT1</p>
+                                </div>
+                            </div>
+
+                            <!-- Achievement 3 -->
+                            <div class="flex items-center gap-3 p-2 rounded bg-white/5 border border-white/5 hover:bg-white/10 hover:border-emerald-500/30 transition-all group/item">
+                                <div class="w-8 h-8 rounded bg-orange-700/10 flex items-center justify-center border border-orange-700/20 group-hover/item:border-orange-500/50">
+                                    <i data-lucide="award" class="w-4 h-4 text-orange-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">MEDALI PERUNGGU</h4>
+                                    <p class="text-[10px] text-neutral-400 font-mono">LKS Nasional</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="space-y-1 text-neutral-400">
-                            <p><span class="text-purple-400">root@lks-server</span>:<span class="text-blue-400">~</span># ./secure_system.sh</p>
-                            <p class="pl-0 text-emerald-400">[+] Hardening system configurations...</p>
-                            <p class="pl-0 text-emerald-400">[+] Patching vulnerabilities...</p>
-                            <p class="pl-0 text-emerald-400">[+] Analyzing network traffic...</p>
-                            <p class="pl-0 text-yellow-400">[*] Threat detected: SQL Injection attempt</p>
-                            <p class="pl-0 text-emerald-400">[+] Threat mitigated. System secure.</p>
+                        
+                        <!-- Footer Info -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-black/40 rounded p-2 border border-white/5 group-hover:border-emerald-500/30 transition-colors">
+                                <p class="text-[10px] text-neutral-500 mb-0.5 uppercase tracking-wider">Role</p>
+                                <p class="text-xs text-white font-mono truncate">CYBER SECURITY SPECIALIST</p>
+                            </div>
+                            <div class="bg-black/40 rounded p-2 border border-white/5 group-hover:border-emerald-500/30 transition-colors">
+                                <p class="text-[10px] text-neutral-500 mb-0.5 uppercase tracking-wider">Clearance</p>
+                                <p class="text-xs text-white font-mono flex items-center gap-2">
+                                    LEVEL 5 <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981]"></span>
+                                </p>
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- Decorative Elements -->
+                    <div class="absolute top-4 right-4 w-2 h-2 border-t border-r border-white/30"></div>
+                    <div class="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-white/30"></div>
                 </div>
 
                 <!-- Card 2: SecOps / Threat Map -->
@@ -611,26 +913,33 @@
                 </div>
 
                 <!-- Card 3: Music/Guitar -->
-                <div class="group glass-card rounded-xl p-6 md:col-span-2 lg:col-span-1 relative overflow-hidden flex flex-col justify-between reveal-on-scroll">
+                <div id="music-card" class="group glass-card rounded-xl p-6 md:col-span-2 lg:col-span-1 relative overflow-hidden flex flex-col justify-between reveal-on-scroll cursor-pointer hover:border-orange-500/50 transition-colors">
                     <div class="absolute top-0 right-0 p-32 bg-orange-500/5 blur-3xl rounded-full"></div>
                     
                     <div class="flex items-center justify-between">
-                        <i data-lucide="music" class="w-5 h-5 text-white/80"></i>
+                        <i data-lucide="music" class="w-5 h-5 text-white/80 group-hover:text-orange-500 transition-colors"></i>
                         <div class="flex gap-1 h-4 items-end">
-                            <div class="w-1 bg-white/50 rounded-sm animate-bar-1"></div>
-                            <div class="w-1 bg-white/50 rounded-sm animate-bar-2"></div>
-                            <div class="w-1 bg-white/50 rounded-sm animate-bar-3"></div>
-                            <div class="w-1 bg-white/50 rounded-sm animate-bar-4"></div>
+                            <div class="w-1 bg-white/50 rounded-sm animate-bar-1 group-hover:bg-orange-500"></div>
+                            <div class="w-1 bg-white/50 rounded-sm animate-bar-2 group-hover:bg-orange-500"></div>
+                            <div class="w-1 bg-white/50 rounded-sm animate-bar-3 group-hover:bg-orange-500"></div>
+                            <div class="w-1 bg-white/50 rounded-sm animate-bar-4 group-hover:bg-orange-500"></div>
                         </div>
                     </div>
                     
                     <div class="mt-6">
-                        <div class="w-full h-32 bg-neutral-900/50 rounded border border-white/5 relative overflow-hidden group-hover:border-white/20 transition-colors">
+                        <div class="w-full h-32 bg-neutral-900/50 rounded border border-white/5 relative overflow-hidden group-hover:border-orange-500/30 transition-colors">
                             <!-- Placeholder image for guitar/music, using a generic one or keeping the previous placeholder -->
                             <img src="foto gitar.jpeg" alt="Guitar" class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-110">
+                            
+                            <!-- Play Overlay -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                                <div class="w-10 h-10 rounded-full bg-orange-500/90 flex items-center justify-center shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+                                    <i data-lucide="play" class="w-4 h-4 text-white fill-current ml-0.5"></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="mt-3">
-                            <h4 class="text-sm font-medium text-white">Musician</h4>
+                            <h4 class="text-sm font-medium text-white group-hover:text-orange-400 transition-colors">Musician</h4>
                             <p class="text-xs text-neutral-500">Guitar & Drum Enthusiast</p>
                         </div>
                     </div>
@@ -678,9 +987,13 @@
                     <!-- Header with Toggle -->
                     <div class="flex justify-between items-start mb-4 z-20 relative">
                         <h3 class="text-lg font-medium text-white tracking-tight hacker-text" data-value="Tech Arsenal">Tech Arsenal</h3>
-                        <button id="toggle-skill-view" class="p-1.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs flex items-center gap-2 text-neutral-400 hover:text-white">
-                            <i data-lucide="network" class="w-3 h-3"></i>
+                        <button id="toggle-skill-view" class="p-1.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs flex items-center gap-2 text-neutral-400 hover:text-white group/btn">
+                            <i data-lucide="network" class="w-3 h-3 group-hover/btn:text-emerald-500 transition-colors"></i>
                             <span id="skill-view-label">Graph View</span>
+                            <span class="relative flex h-2 w-2 ml-1">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </span>
                         </button>
                     </div>
 
@@ -775,7 +1088,72 @@
                     </div>
                 </div>
 
-                 <!-- Card 8: Other Achievements List -->
+                <!-- Card 8: ASCII Mirror (New) -->
+                <div class="group glass-card rounded-xl p-0 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col reveal-on-scroll min-h-[250px]">
+                    <div class="absolute top-0 left-0 right-0 p-4 z-10 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent">
+                        <div>
+                            <h3 class="text-xs font-bold text-white tracking-wide uppercase flex items-center gap-2">
+                                <i data-lucide="camera" class="w-3 h-3 text-emerald-500"></i> CYBER_MIRROR
+                            </h3>
+                            <p class="text-[10px] text-neutral-500 font-mono">ASCII_RENDERER_V2.0</p>
+                        </div>
+                        <button id="toggle-cam-btn" class="px-2 py-1 bg-emerald-500/20 border border-emerald-500/50 rounded text-[10px] text-emerald-400 hover:bg-emerald-500 hover:text-white transition-colors">
+                            INITIALIZE
+                        </button>
+                    </div>
+                    
+                    <div class="relative flex-grow bg-black w-full h-full overflow-hidden">
+                        <div id="ascii-container" class="w-full h-full flex items-center justify-center text-emerald-500/80">
+                            <span class="text-xs font-mono opacity-50">[ CAMERA FEED OFFLINE ]</span>
+                        </div>
+                        <video id="hidden-video" class="hidden" playsinline autoplay muted></video>
+                        <canvas id="ascii-canvas" class="hidden"></canvas>
+                    </div>
+                </div>
+
+                <!-- Card 9: Cyber Defense (Game) -->
+                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col justify-center items-center reveal-on-scroll border-blue-500/20 hover:border-blue-500/50 transition-colors">
+                    <div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(59,130,246,0.05)_10px,rgba(59,130,246,0.05)_20px)]"></div>
+                    
+                    <div class="relative z-10 text-center">
+                        <i data-lucide="shield-alert" class="w-8 h-8 text-blue-500 mx-auto mb-3 animate-pulse"></i>
+                        <h3 class="text-sm font-bold text-white tracking-widest uppercase mb-1">SYSTEM DEFENSE</h3>
+                        <p class="text-[10px] text-blue-400 font-mono mb-4">NEUTRALIZE INCOMING THREATS</p>
+                        
+                        <button id="start-game-btn" class="group relative px-6 py-3 bg-blue-500/10 border border-blue-500 text-blue-500 font-bold text-xs tracking-widest uppercase rounded hover:bg-blue-500 hover:text-white transition-all overflow-hidden">
+                            <span class="relative z-10">ENGAGE PROTOCOL</span>
+                            <div class="absolute inset-0 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 11: Sonic Synth Pad -->
+                <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-2 relative overflow-hidden flex flex-col reveal-on-scroll border-purple-500/20 hover:border-purple-500/50 transition-colors">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="music" class="w-4 h-4 text-purple-500"></i>
+                            <span class="text-xs font-medium text-white tracking-wide uppercase">SONIC_SYNTH</span>
+                        </div>
+                        <div class="text-[10px] font-mono text-neutral-500">AUDIO_API_ACTIVE</div>
+                    </div>
+                    
+                    <div class="synth-grid flex-1 min-h-[120px]">
+                        <!-- Drum Row -->
+                        <button class="synth-btn" data-sound="kick" title="Kick Drum">KICK</button>
+                        <button class="synth-btn" data-sound="snare" title="Snare Drum">SNARE</button>
+                        <button class="synth-btn" data-sound="hihat" title="Hi-Hat">HIHAT</button>
+                        <button class="synth-btn" data-sound="clap" title="Clap">CLAP</button>
+                        
+                        <!-- Synth Row -->
+                        <button class="synth-btn" data-sound="note" data-freq="261.63" title="C4">C4</button>
+                        <button class="synth-btn" data-sound="note" data-freq="329.63" title="E4">E4</button>
+                        <button class="synth-btn" data-sound="note" data-freq="392.00" title="G4">G4</button>
+                        <button class="synth-btn" data-sound="note" data-freq="523.25" title="C5">C5</button>
+                    </div>
+                    <p class="text-[10px] text-neutral-600 font-mono mt-2 text-center">CLICK TO GENERATE WAVES</p>
+                </div>
+
+                 <!-- Card 10: Other Achievements List -->
                  <div class="group glass-card rounded-xl p-6 md:col-span-3 lg:col-span-4 relative overflow-hidden flex flex-col reveal-on-scroll">
                     <h3 class="text-lg font-medium text-white tracking-tight mb-4 hacker-text" data-value="Prestasi Lainnya">Prestasi Lainnya</h3>
                     <ul class="space-y-3 text-sm text-neutral-400">
@@ -825,24 +1203,76 @@
                 </div>
             </section>
 
-            <!-- Education Section -->
+            <!-- Education Section (Sequencer Style) -->
             <section id="education" class="border-t border-white/10 pt-16">
-                <h2 class="text-2xl font-medium text-white tracking-tight mb-8 reveal-on-scroll hacker-text" data-value="Pendidikan">Pendidikan</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 rounded-xl reveal-on-scroll">
-                        <span class="text-xs font-mono text-neutral-500">Sekolah Dasar</span>
-                        <h3 class="text-lg font-medium text-white mt-2">SD Perguruan Rakyat 3</h3>
-                        <p class="text-sm text-neutral-500 mt-2">Membangun pondasi karakter, disiplin, dan rasa ingin tahu.</p>
+                <h2 class="text-2xl font-medium text-white tracking-tight mb-8 reveal-on-scroll hacker-text" data-value="Pendidikan & Timeline">Pendidikan & Timeline</h2>
+                
+                <div class="sequencer-wrapper reveal-on-scroll">
+                    <div class="seq-header">
+                        <div class="w-[120px] border-right border-[#333] bg-[#151515]"></div>
+                        <div class="seq-ruler">
+                            <div class="seq-marker">2010</div>
+                            <div class="seq-marker">2013</div>
+                            <div class="seq-marker">2016</div>
+                            <div class="seq-marker">2019</div>
+                            <div class="seq-marker">2022</div>
+                            <div class="seq-marker">2025</div>
+                        </div>
                     </div>
-                    <div class="glass-card p-6 rounded-xl reveal-on-scroll">
-                        <span class="text-xs font-mono text-neutral-500">Sekolah Menengah Pertama</span>
-                        <h3 class="text-lg font-medium text-white mt-2">SMPN 97</h3>
-                        <p class="text-sm text-neutral-500 mt-2">Belajar kerja tim dan kompetisi mental bertanding.</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border-emerald-500/20 reveal-on-scroll">
-                        <span class="text-xs font-mono text-emerald-500">Sekolah Menengah Kejuruan</span>
-                        <h3 class="text-lg font-medium text-white mt-2">SMKN 40 Jakarta</h3>
-                        <p class="text-sm text-neutral-500 mt-2">Ketua Angkatan & Pengurus OSIS. Aktif dalam berbagai kompetisi.</p>
+                    
+                    <div class="seq-body" id="seq-body">
+                        <div class="seq-playhead" id="seq-playhead"></div>
+                        
+                        <!-- Track 1: Education -->
+                        <div class="seq-track">
+                            <div class="seq-track-info">
+                                <i data-lucide="graduation-cap" class="w-3 h-3 mr-2 text-blue-400"></i> EDUCATION
+                            </div>
+                            <div class="seq-track-lane">
+                                <div class="seq-clip bg-blue-500/20 border-blue-500/50" style="left: 5%; width: 15%;" title="SD Perguruan Rakyat 3">
+                                    <span class="font-bold">SD PR 3</span>
+                                </div>
+                                <div class="seq-clip bg-blue-500/20 border-blue-500/50" style="left: 22%; width: 15%;" title="SMPN 97 Jakarta">
+                                    <span class="font-bold">SMPN 97</span>
+                                </div>
+                                <div class="seq-clip bg-emerald-500/20 border-emerald-500/50" style="left: 40%; width: 20%;" title="SMKN 40 Jakarta (RPL)">
+                                    <span class="font-bold text-emerald-400">SMKN 40 (RPL)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Track 2: Achievements -->
+                        <div class="seq-track">
+                            <div class="seq-track-info">
+                                <i data-lucide="trophy" class="w-3 h-3 mr-2 text-yellow-400"></i> AWARDS
+                            </div>
+                            <div class="seq-track-lane">
+                                <div class="seq-clip bg-yellow-500/20 border-yellow-500/50" style="left: 45%; width: 5%;" title="Juara Wilayah">
+                                    <i data-lucide="medal" class="w-3 h-3"></i>
+                                </div>
+                                <div class="seq-clip bg-yellow-500/20 border-yellow-500/50" style="left: 52%; width: 5%;" title="Juara Provinsi">
+                                    <i data-lucide="medal" class="w-3 h-3"></i>
+                                </div>
+                                <div class="seq-clip bg-yellow-500/20 border-yellow-500/50" style="left: 58%; width: 5%;" title="Medali Perunggu Nasional">
+                                    <i data-lucide="medal" class="w-3 h-3"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Track 3: Experience -->
+                        <div class="seq-track">
+                            <div class="seq-track-info">
+                                <i data-lucide="briefcase" class="w-3 h-3 mr-2 text-purple-400"></i> CAREER
+                            </div>
+                            <div class="seq-track-lane">
+                                <div class="seq-clip bg-purple-500/20 border-purple-500/50" style="left: 55%; width: 10%;" title="Freelance Web Dev">
+                                    <span>Freelance</span>
+                                </div>
+                                <div class="seq-clip bg-pink-500/20 border-pink-500/50" style="left: 66%; width: 15%;" title="Timeless Project (Founder)">
+                                    <span class="text-pink-400">Timeless</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -888,15 +1318,22 @@
                             <textarea id="contact-message" rows="4" class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors resize-none" placeholder="Ceritakan tentang proyek Anda..."></textarea>
                             <div id="secure-preview" class="secure-preview"></div>
                         </div>
-                        <button id="send-whatsapp-btn" type="button" class="w-full bg-white text-black font-medium py-2 rounded text-sm hover:bg-neutral-200 transition-colors">
-                            Kirim Pesan
+                        <button id="send-whatsapp-btn" type="button" class="group relative w-full bg-white text-black font-medium py-2 rounded text-sm hover:bg-neutral-200 transition-all overflow-hidden">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <span>Kirim Pesan</span>
+                                <i data-lucide="send" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                            <div id="send-progress" class="absolute inset-0 bg-emerald-500 transform -translate-x-full transition-transform duration-[2000ms] ease-linear"></div>
                         </button>
                     </form>
                 </div>
             </section>
 
-            <footer class="flex justify-between items-center text-xs text-neutral-600 pt-8">
-                <p>&copy; 2025 Muhammad Rakha. All rights reserved.</p>
+            <footer class="flex flex-col md:flex-row justify-between items-center text-xs text-neutral-600 pt-8 gap-4">
+                <div class="flex flex-col gap-1">
+                    <p>&copy; 2025 Muhammad Rakha. All rights reserved.</p>
+                    <p class="text-[10px] text-neutral-700 font-mono cursor-help" title="Try the Konami Code!">HINT: ↑↑↓↓←→←→BA</p>
+                </div>
                 <!-- CTF FLAG 1: CTF{H7ML_H1DD3N_G3M} -->
                 <div class="flex items-center gap-4">
                     <canvas id="server-stats" width="100" height="20" class="opacity-50"></canvas>
@@ -911,22 +1348,60 @@
             // WhatsApp Logic
             const sendBtn = document.getElementById('send-whatsapp-btn');
             if (sendBtn) {
-                sendBtn.addEventListener('click', () => {
+                sendBtn.addEventListener('click', async () => {
                     const name = document.getElementById('contact-name').value;
                     const email = document.getElementById('contact-email').value;
                     const message = document.getElementById('contact-message').value;
 
                     if (!name || !message) {
                         alert("Mohon isi nama dan pesan terlebih dahulu.");
+                        if (typeof playUiSound === 'function') playUiSound('error');
                         return;
                     }
 
+                    // Animation Elements
+                    const progress = document.getElementById('send-progress');
+                    const btnText = sendBtn.querySelector('span');
+                    const originalText = btnText.innerHTML;
+
+                    // Start Animation
+                    if (typeof playUiSound === 'function') playUiSound('click');
+                    sendBtn.disabled = true;
+                    btnText.innerText = "Mengirim...";
+                    
+                    if (progress) {
+                        progress.style.width = "0%";
+                        progress.style.transition = "width 1.5s cubic-bezier(0.22, 1, 0.36, 1)";
+                        
+                        // Force reflow
+                        void progress.offsetWidth; 
+                        
+                        progress.style.width = "100%";
+                    }
+
+                    // Wait for animation
+                    await new Promise(r => setTimeout(r, 1500));
+
+                    if (typeof playUiSound === 'function') playUiSound('success');
+                    btnText.innerText = "Terkirim!";
+                    
+                    // Open WhatsApp
                     const phoneNumber = "6282211599226";
                     const text = `Halo Rakha, saya ${name} (${email}).\n\n${message}`;
                     const encodedText = encodeURIComponent(text);
                     const url = `https://wa.me/${phoneNumber}?text=${encodedText}`;
 
                     window.open(url, '_blank');
+
+                    // Reset after delay
+                    setTimeout(() => {
+                        if (progress) {
+                            progress.style.transition = "none";
+                            progress.style.width = "0%";
+                        }
+                        btnText.innerHTML = originalText;
+                        sendBtn.disabled = false;
+                    }, 3000);
                 });
             }
 
@@ -935,6 +1410,71 @@
                 lucide.createIcons();
             }
 
+            /* =========================================
+               HOLOGRAPHIC ID LOGIC
+               ========================================= */
+            const holoWrapper = document.getElementById('lks-card') || document.getElementById('holo-card');
+            
+            if (holoWrapper) {
+                const holoCard = holoWrapper.querySelector('.holo-content') || holoWrapper;
+                const holoGlare = holoWrapper.querySelector('.holo-shine');
+
+                holoWrapper.addEventListener('mousemove', (e) => {
+                    const rect = holoWrapper.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg
+                    const rotateY = ((x - centerX) / centerX) * 10; // Max 10deg
+                    
+                    if (holoCard) holoCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    
+                    // Glare effect
+                    if (holoGlare) {
+                        holoGlare.style.opacity = '1';
+                        holoGlare.style.transform = `translate(${x - centerX}px, ${y - centerY}px)`;
+                    }
+                });
+
+                holoWrapper.addEventListener('mouseleave', () => {
+                    if (holoCard) holoCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                    if (holoGlare) holoGlare.style.opacity = '0';
+                });
+            }
+
+            /* =========================================
+               SEQUENCER ANIMATION
+               ========================================= */
+            const playhead = document.getElementById('seq-playhead');
+            if (playhead) {
+                let playheadPos = 0;
+                function animatePlayhead() {
+                    playheadPos += 0.5;
+                    if (playheadPos > 100) playheadPos = 0;
+                    playhead.style.left = `${playheadPos}%`;
+                    requestAnimationFrame(animatePlayhead);
+                }
+                animatePlayhead();
+            }
+
+            /* =========================================
+               TERMINAL CHATBOT LOGIC
+               ========================================= */
+            // Extend existing commands
+            const aiResponses = {
+                "who is rakha": "Rakha is a Cyber Security Enthusiast and Musician based in Jakarta. He specializes in Network Security and Web Development.",
+                "why cyber": "Because the digital world needs guardians. Plus, breaking things to fix them is fun.",
+                "favorite band": "Classified information. But he enjoys high-tempo electronic beats and heavy bass.",
+                "status": "System is ONLINE. All security protocols active.",
+                "joke": "Why do programmers prefer dark mode? Because light attracts bugs."
+            };
+
+            // Hook into existing command processor (simple override for 'ask' command)
+            // Note: This logic is integrated into the main terminal event listener below
+            
             // --- TERMINAL LOGIC ---
             const cmdOverlay = document.getElementById('cmd-overlay');
             const openCmdBtn = document.getElementById('open-cmd-btn');
@@ -1012,6 +1552,28 @@
                                 response.textContent = `[-] INVALID FLAG: ${arg || 'No flag provided'}`;
                                 cmdOutput.appendChild(response);
                             }
+                        } else if (command === 'ask') {
+                            // Chatbot Logic
+                            const query = inputParts.slice(1).join(' ').toLowerCase();
+                            let reply = "I'm sorry, I don't have data on that. Try: 'who is rakha', 'why cyber', 'favorite band', 'status', 'joke'.";
+                            
+                            if (aiResponses[query]) {
+                                reply = aiResponses[query];
+                            } else {
+                                // Fuzzy match attempt
+                                for (const key in aiResponses) {
+                                    if (query.includes(key)) {
+                                        reply = aiResponses[key];
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            const response = document.createElement('div');
+                            response.className = "text-cyan-400 mb-2 font-mono";
+                            response.innerHTML = `<span class="text-purple-400">[AI_RAKHA]:</span> ${reply}`;
+                            cmdOutput.appendChild(response);
+
                         } else if (commands[command]) {
                             if (commands[command] === "CLEAR") {
                                 cmdOutput.innerHTML = '';
@@ -1062,17 +1624,71 @@
                 }
             });
 
-            function activateMatrixMode() {
-                alert("SYSTEM OVERRIDE: MATRIX MODE ACTIVATED");
-                document.documentElement.style.filter = "invert(1) hue-rotate(180deg)";
-                document.body.style.fontFamily = "'Courier New', monospace";
-                // Reset after 5 seconds
-                setTimeout(() => {
-                    document.documentElement.style.filter = "none";
+            let matrixInterval;
+            const matrixCanvas = document.getElementById('matrix-canvas');
+            
+            window.activateMatrixMode = function() {
+                if (!matrixCanvas) return;
+                
+                // Toggle State
+                const isActive = matrixCanvas.style.opacity === '1';
+                
+                if (isActive) {
+                    // Deactivate
+                    matrixCanvas.style.opacity = '0';
+                    clearInterval(matrixInterval);
                     document.body.style.fontFamily = "";
-                    alert("SYSTEM RESTORED");
-                }, 5000);
-            }
+                    return;
+                }
+
+                // Activate
+                matrixCanvas.style.opacity = '1';
+                document.body.style.fontFamily = "'Courier New', monospace";
+                
+                const ctx = matrixCanvas.getContext('2d');
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+
+                const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+                const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const nums = '0123456789';
+                const alphabet = katakana + latin + nums;
+
+                const fontSize = 16;
+                const columns = matrixCanvas.width / fontSize;
+
+                const rainDrops = [];
+                for(let x = 0; x < columns; x++) {
+                    rainDrops[x] = 1;
+                }
+
+                const draw = () => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+                    ctx.fillStyle = '#0F0';
+                    ctx.font = fontSize + 'px monospace';
+
+                    for(let i = 0; i < rainDrops.length; i++) {
+                        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                        if(rainDrops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975){
+                            rainDrops[i] = 0;
+                        }
+                        rainDrops[i]++;
+                    }
+                };
+
+                clearInterval(matrixInterval);
+                matrixInterval = setInterval(draw, 30);
+                
+                // Handle Resize
+                window.addEventListener('resize', () => {
+                    matrixCanvas.width = window.innerWidth;
+                    matrixCanvas.height = window.innerHeight;
+                });
+            };
 
             // --- CUSTOM CONTEXT MENU ---
             const contextMenu = document.getElementById('context-menu');
@@ -1383,6 +1999,8 @@
                         introOverlay.remove();
                         // Start main site animations
                         setTimeout(typeWriter, 500);
+                        // Play Power Up Sound
+                        if (typeof playUiSound === 'function') playUiSound('powerup');
                     }, 1000);
                 });
             }
@@ -2206,6 +2824,96 @@
             }
 
             /* =========================================
+               NEW FEATURES: ASCII CAM & SELF DESTRUCT
+               ========================================= */
+            
+            // 1. ASCII Camera
+            const asciiContainer = document.getElementById('ascii-container');
+            const hiddenVideo = document.getElementById('hidden-video');
+            const asciiCanvas = document.getElementById('ascii-canvas');
+            const toggleCamBtn = document.getElementById('toggle-cam-btn');
+            let isCamActive = false;
+            let asciiInterval;
+            
+            const density = "Ñ@#W$9876543210?!abc;:+=-,._ ";
+
+            if (toggleCamBtn) {
+                toggleCamBtn.addEventListener('click', async () => {
+                    if (!isCamActive) {
+                        try {
+                            const stream = await navigator.mediaDevices.getUserMedia({ 
+                                video: { facingMode: 'user', width: 128, height: 96 } // Low res for performance
+                            });
+                            hiddenVideo.srcObject = stream;
+                            hiddenVideo.play();
+                            isCamActive = true;
+                            toggleCamBtn.textContent = "TERMINATE";
+                            toggleCamBtn.classList.add('bg-red-500/20', 'border-red-500/50', 'text-red-400');
+                            toggleCamBtn.classList.remove('bg-emerald-500/20', 'border-emerald-500/50', 'text-emerald-400');
+                            
+                            // Start Rendering Loop
+                            const ctx = asciiCanvas.getContext('2d', { willReadFrequently: true });
+                            
+                            asciiInterval = setInterval(() => {
+                                if (hiddenVideo.readyState === hiddenVideo.HAVE_ENOUGH_DATA) {
+                                    // Calculate aspect ratio for mobile responsiveness
+                                    const w = 64; // Fixed width for ASCII grid
+                                    const h = Math.floor(hiddenVideo.videoHeight / hiddenVideo.videoWidth * w * 0.6); // 0.6 compensates for char aspect ratio
+                                    
+                                    asciiCanvas.width = w;
+                                    asciiCanvas.height = h;
+                                    ctx.drawImage(hiddenVideo, 0, 0, w, h);
+                                    
+                                    const imageData = ctx.getImageData(0, 0, w, h);
+                                    const pixels = imageData.data;
+                                    let asciiImage = "";
+                                    
+                                    for (let i = 0; i < h; i++) {
+                                        for (let j = 0; j < w; j++) {
+                                            const pixelIndex = (i * w + j) * 4;
+                                            const r = pixels[pixelIndex];
+                                            const g = pixels[pixelIndex + 1];
+                                            const b = pixels[pixelIndex + 2];
+                                            const avg = (r + g + b) / 3;
+                                            
+                                            const len = density.length;
+                                            const charIndex = Math.floor(map(avg, 0, 255, len, 0));
+                                            
+                                            const c = density.charAt(charIndex);
+                                            if (c == " ") asciiImage += "&nbsp;";
+                                            else asciiImage += c;
+                                        }
+                                        asciiImage += '<br/>';
+                                    }
+                                    asciiContainer.innerHTML = asciiImage;
+                                }
+                            }, 50); // 20 FPS
+                            
+                        } catch (err) {
+                            console.error(err);
+                            alert("CAMERA ACCESS DENIED OR UNAVAILABLE");
+                        }
+                    } else {
+                        // Stop Camera
+                        const stream = hiddenVideo.srcObject;
+                        const tracks = stream.getTracks();
+                        tracks.forEach(track => track.stop());
+                        hiddenVideo.srcObject = null;
+                        clearInterval(asciiInterval);
+                        asciiContainer.innerHTML = '<span class="text-xs font-mono opacity-50">[ CAMERA FEED OFFLINE ]</span>';
+                        isCamActive = false;
+                        toggleCamBtn.textContent = "INITIALIZE";
+                        toggleCamBtn.classList.remove('bg-red-500/20', 'border-red-500/50', 'text-red-400');
+                        toggleCamBtn.classList.add('bg-emerald-500/20', 'border-emerald-500/50', 'text-emerald-400');
+                    }
+                });
+            }
+            
+            function map(value, start1, stop1, start2, stop2) {
+                return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+            }
+
+            /* =========================================
                PROJECT DOSSIER LOGIC
                ========================================= */
             const dossierModal = document.getElementById('dossier-modal');
@@ -2270,6 +2978,519 @@
             dossierModal.addEventListener('click', (e) => {
                 if (e.target === dossierModal) closeDossier();
             });
+
+            /* =========================================
+               CYBER DEFENSE GAME LOGIC
+               ========================================= */
+            const startGameBtn = document.getElementById('start-game-btn');
+            const gameOverlay = document.getElementById('defense-game-overlay');
+            const gameArea = document.getElementById('game-area');
+            const gameScoreEl = document.getElementById('game-score');
+            const gameHealthEl = document.getElementById('game-health');
+            const gameOverScreen = document.getElementById('game-over-screen');
+            const finalScoreEl = document.getElementById('final-score');
+            const restartGameBtn = document.getElementById('restart-game-btn');
+            const closeGameBtn = document.getElementById('close-game-btn');
+            const quitGameBtn = document.getElementById('quit-game-btn');
+
+            let gameActive = false;
+            let score = 0;
+            let health = 100;
+            let words = [];
+            let spawnRate = 2000;
+            let lastSpawn = 0;
+            let animationFrame;
+            
+            const threatWords = [
+                "MALWARE", "TROJAN", "PHISHING", "DDOS", "SQL_INJECTION", 
+                "RANSOMWARE", "SPYWARE", "BOTNET", "EXPLOIT", "ZERO_DAY",
+                "BRUTE_FORCE", "ROOTKIT", "BACKDOOR", "WORM", "KEYLOGGER"
+            ];
+
+            function spawnWord() {
+                const wordText = threatWords[Math.floor(Math.random() * threatWords.length)];
+                const x = Math.random() * (window.innerWidth - 100);
+                const word = {
+                    text: wordText,
+                    x: x,
+                    y: -30,
+                    element: document.createElement('div'),
+                    matchedIndex: 0
+                };
+                
+                word.element.className = 'falling-word';
+                word.element.textContent = wordText;
+                word.element.style.left = `${x}px`;
+                gameArea.appendChild(word.element);
+                words.push(word);
+            }
+
+            function updateGame(timestamp) {
+                if (!gameActive) return;
+
+                if (timestamp - lastSpawn > spawnRate) {
+                    spawnWord();
+                    lastSpawn = timestamp;
+                    if (spawnRate > 500) spawnRate -= 20; // Increase difficulty
+                }
+
+                words.forEach((word, index) => {
+                    word.y += 1 + (score / 500); // Speed increases with score
+                    word.element.style.top = `${word.y}px`;
+
+                    if (word.y > window.innerHeight) {
+                        // Missed word
+                        health -= 10;
+                        gameHealthEl.textContent = `${health}%`;
+                        gameHealthEl.style.color = health < 30 ? '#ef4444' : '#10b981';
+                        gameArea.removeChild(word.element);
+                        words.splice(index, 1);
+                        
+                        // Screen shake effect
+                        gameOverlay.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
+                        setTimeout(() => gameOverlay.style.transform = 'none', 50);
+
+                        if (health <= 0) endGame();
+                    }
+                });
+
+                animationFrame = requestAnimationFrame(updateGame);
+            }
+
+            function endGame() {
+                gameActive = false;
+                cancelAnimationFrame(animationFrame);
+                gameOverScreen.classList.remove('hidden');
+                finalScoreEl.textContent = score;
+            }
+
+            function resetGame() {
+                score = 0;
+                health = 100;
+                spawnRate = 2000;
+                words.forEach(w => gameArea.removeChild(w.element));
+                words = [];
+                gameScoreEl.textContent = score;
+                gameHealthEl.textContent = "100%";
+                gameHealthEl.style.color = '#10b981';
+                gameOverScreen.classList.add('hidden');
+                gameActive = true;
+                lastSpawn = performance.now();
+                requestAnimationFrame(updateGame);
+            }
+
+            if (startGameBtn) {
+                startGameBtn.addEventListener('click', () => {
+                    gameOverlay.style.display = 'flex';
+                    resetGame();
+                });
+            }
+
+            if (restartGameBtn) restartGameBtn.addEventListener('click', resetGame);
+            
+            if (closeGameBtn) {
+                closeGameBtn.addEventListener('click', () => {
+                    gameOverlay.style.display = 'none';
+                    gameActive = false;
+                });
+            }
+            
+            if (quitGameBtn) {
+                quitGameBtn.addEventListener('click', () => {
+                    gameOverlay.style.display = 'none';
+                    gameActive = false;
+                });
+            }
+
+            // Typing Logic
+            document.addEventListener('keydown', (e) => {
+                if (!gameActive) return;
+                
+                const key = e.key.toUpperCase();
+                let matchFound = false;
+
+                // Find matching words
+                for (let i = 0; i < words.length; i++) {
+                    const word = words[i];
+                    const targetChar = word.text[word.matchedIndex];
+                    
+                    if (key === targetChar) {
+                        word.matchedIndex++;
+                        const matched = word.text.substring(0, word.matchedIndex);
+                        const remaining = word.text.substring(word.matchedIndex);
+                        word.element.innerHTML = `<span class="matched-part">${matched}</span>${remaining}`;
+                        
+                        if (word.matchedIndex === word.text.length) {
+                            // Word completed
+                            score += 100;
+                            gameScoreEl.textContent = score;
+                            gameArea.removeChild(word.element);
+                            words.splice(i, 1);
+                            
+                            // Visual feedback
+                            const flash = document.createElement('div');
+                            flash.style.position = 'absolute';
+                            flash.style.left = word.element.style.left;
+                            flash.style.top = word.element.style.top;
+                            flash.style.color = '#10b981';
+                            flash.style.fontWeight = 'bold';
+                            flash.textContent = '+100';
+                            gameArea.appendChild(flash);
+                            setTimeout(() => gameArea.removeChild(flash), 500);
+                        }
+                        matchFound = true;
+                        break; // Only type one letter per keypress (prevent multi-match)
+                    }
+                }
+            });
+
+            /* =========================================
+               VOICE COMMAND LOGIC
+               ========================================= */
+            const voiceBtn = document.getElementById('voice-cmd-btn');
+            
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.continuous = false;
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+
+                voiceBtn.addEventListener('click', () => {
+                    try {
+                        recognition.start();
+                        voiceBtn.classList.add('listening');
+                    } catch (e) {
+                        console.log("Recognition already started");
+                    }
+                });
+
+                recognition.onend = () => {
+                    voiceBtn.classList.remove('listening');
+                };
+
+                recognition.onresult = (event) => {
+                    const command = event.results[0][0].transcript.toLowerCase();
+                    console.log("Voice Command:", command);
+                    
+                    // Visual Feedback
+                    const feedback = document.createElement('div');
+                    feedback.className = "fixed bottom-24 right-24 bg-black/80 text-green-500 px-4 py-2 rounded border border-green-500/50 font-mono text-xs z-50";
+                    feedback.textContent = `> CMD: "${command}"`;
+                    document.body.appendChild(feedback);
+                    setTimeout(() => document.body.removeChild(feedback), 3000);
+
+                    // Command Parsing
+                    if (command.includes('terminal')) {
+                        openTerminal();
+                    } else if (command.includes('close')) {
+                        closeTerminal();
+                        closeDossier();
+                    } else if (command.includes('scroll down')) {
+                        window.scrollBy({ top: 500, behavior: 'smooth' });
+                    } else if (command.includes('scroll up')) {
+                        window.scrollBy({ top: -500, behavior: 'smooth' });
+                    } else if (command.includes('matrix')) {
+                        activateMatrixMode();
+                    } else if (command.includes('reload') || command.includes('refresh')) {
+                        location.reload();
+                    } else if (command.includes('defense') || command.includes('game')) {
+                        if (startGameBtn) startGameBtn.click();
+                    } else if (command.includes('projects')) {
+                        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+                    } else if (command.includes('skills')) {
+                        document.getElementById('skills').scrollIntoView({ behavior: 'smooth' });
+                    }
+                };
+            } else {
+                voiceBtn.style.display = 'none';
+                console.log("Web Speech API not supported");
+            }
+            /* =========================================
+               SONIC SYNTH LOGIC (Web Audio API)
+               ========================================= */
+            const synthBtns = document.querySelectorAll('.synth-btn');
+            let audioCtx;
+
+            function initAudio() {
+                if (!audioCtx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    audioCtx = new AudioContext();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }
+
+            function playSound(type, freq) {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const gainNode = audioCtx.createGain();
+                gainNode.connect(audioCtx.destination);
+
+                if (type === 'kick') {
+                    const osc = audioCtx.createOscillator();
+                    osc.connect(gainNode);
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
+                    gainNode.gain.setValueAtTime(1, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                } else if (type === 'snare') {
+                    const bufferSize = audioCtx.sampleRate * 0.5;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const noiseFilter = audioCtx.createBiquadFilter();
+                    noiseFilter.type = 'highpass';
+                    noiseFilter.frequency.value = 1000;
+                    noise.connect(noiseFilter);
+                    noiseFilter.connect(gainNode);
+                    gainNode.gain.setValueAtTime(1, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    noise.start(now);
+                    noise.stop(now + 0.2);
+                } else if (type === 'hihat') {
+                    const bufferSize = audioCtx.sampleRate * 0.1;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const noiseFilter = audioCtx.createBiquadFilter();
+                    noiseFilter.type = 'highpass';
+                    noiseFilter.frequency.value = 5000;
+                    noise.connect(noiseFilter);
+                    noiseFilter.connect(gainNode);
+                    gainNode.gain.setValueAtTime(0.7, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                    noise.start(now);
+                    noise.stop(now + 0.1);
+                } else if (type === 'clap') {
+                    const bufferSize = audioCtx.sampleRate * 0.2;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const noiseFilter = audioCtx.createBiquadFilter();
+                    noiseFilter.type = 'bandpass';
+                    noiseFilter.frequency.value = 1500;
+                    noise.connect(noiseFilter);
+                    noiseFilter.connect(gainNode);
+                    gainNode.gain.setValueAtTime(1, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    noise.start(now);
+                    noise.stop(now + 0.2);
+                } else if (type === 'note') {
+                    const osc = audioCtx.createOscillator();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, now);
+                    
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(2000, now);
+                    filter.frequency.exponentialRampToValueAtTime(500, now + 0.5);
+                    
+                    osc.connect(filter);
+                    filter.connect(gainNode);
+                    
+                    gainNode.gain.setValueAtTime(0.2, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1);
+                    
+                    osc.start(now);
+                    osc.stop(now + 1);
+                }
+            }
+
+            synthBtns.forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    const type = btn.dataset.sound;
+                    const freq = btn.dataset.freq;
+                    playSound(type, freq);
+                    btn.classList.add('active');
+                    setTimeout(() => btn.classList.remove('active'), 100);
+                });
+            });
+
+            /* =========================================
+               3D CYBER GLOBE (HERO SECTION)
+               ========================================= */
+            function initHero3D() {
+                const container = document.getElementById('hero-3d');
+                if (!container) return;
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                // Create Wireframe Sphere
+                const geometry = new THREE.IcosahedronGeometry(1.5, 2);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x10b981, 
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+
+                // Create Particles
+                const particlesGeometry = new THREE.BufferGeometry();
+                const particlesCount = 200;
+                const posArray = new Float32Array(particlesCount * 3);
+
+                for(let i = 0; i < particlesCount * 3; i++) {
+                    posArray[i] = (Math.random() - 0.5) * 5;
+                }
+
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                const particlesMaterial = new THREE.PointsMaterial({
+                    size: 0.02,
+                    color: 0x3b82f6,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particlesMesh);
+
+                camera.position.z = 3;
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    sphere.rotation.x += 0.002;
+                    sphere.rotation.y += 0.002;
+                    particlesMesh.rotation.y -= 0.001;
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                // Handle Resize
+                window.addEventListener('resize', () => {
+                    if (container.clientWidth > 0 && container.clientHeight > 0) {
+                        camera.aspect = container.clientWidth / container.clientHeight;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(container.clientWidth, container.clientHeight);
+                    }
+                });
+            }
+            
+            // Delay init to ensure container has size
+            setTimeout(initHero3D, 1000);
+
+            /* =========================================
+               UI SOUND EFFECTS (SFX)
+               ========================================= */
+            function playUiSound(type) {
+                // Only play if user has interacted (AudioContext policy)
+                if (!audioCtx || audioCtx.state === 'suspended') return;
+
+                const now = audioCtx.currentTime;
+                const gainNode = audioCtx.createGain();
+                gainNode.connect(audioCtx.destination);
+
+                const osc = audioCtx.createOscillator();
+                osc.connect(gainNode);
+
+                if (type === 'hover') {
+                    // High pitched blip
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+                    
+                    gainNode.gain.setValueAtTime(0.05, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'click') {
+                    // Mechanical click
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.exponentialRampToValueAtTime(50, now + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.05, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'type') {
+                    // Key press click
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, now);
+                    
+                    gainNode.gain.setValueAtTime(0.03, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'powerup') {
+                    // System Boot Sound
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(100, now);
+                    osc.frequency.exponentialRampToValueAtTime(1000, now + 1);
+                    
+                    gainNode.gain.setValueAtTime(0.1, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+                    
+                    osc.start(now);
+                    osc.stop(now + 1.5);
+                }
+            }
+
+            // Attach SFX to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .glass-card, .synth-btn');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => playUiSound('hover'));
+                el.addEventListener('click', () => playUiSound('click'));
+            });
+
+            // Typing SFX
+            document.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', () => playUiSound('type'));
+                el.addEventListener('focus', () => playUiSound('hover'));
+            });
+
+            /* =========================================
+               MUSIC CARD INTERACTION
+               ========================================= */
+            const musicCard = document.getElementById('music-card');
+            if (musicCard) {
+                let isPlaying = false;
+                
+                musicCard.addEventListener('mouseenter', () => {
+                    if (isPlaying) return;
+                    isPlaying = true;
+                    
+                    // Play a simple E-minor arpeggio
+                    const notes = [329.63, 392.00, 493.88, 659.25]; // E4, G4, B4, E5
+                    let delay = 0;
+                    
+                    notes.forEach((freq, i) => {
+                        setTimeout(() => {
+                            playSound('note', freq);
+                        }, delay);
+                        delay += 150;
+                    });
+                    
+                    // Reset flag
+                    setTimeout(() => { isPlaying = false; }, delay + 500);
+                });
+            }
+
         });
     </script>
 
@@ -2437,6 +3658,36 @@
         <div class="w-16 text-right">LAT: <span id="latency" class="text-emerald-400">24ms</span></div>
         <div class="h-3 w-px bg-white/10"></div>
         <div id="flag-counter" class="text-yellow-500 font-bold tracking-wider cursor-help" title="Find hidden flags!">FLAGS: 0/3</div>
+    </div>
+    <!-- Voice Command Button -->
+    <div id="voice-cmd-btn" title="Voice Command (Beta)">
+        <i data-lucide="mic" class="w-6 h-6"></i>
+    </div>
+
+    <!-- Cyber Defense Game Overlay -->
+    <div id="defense-game-overlay">
+        <div class="absolute top-10 left-0 right-0 text-center pointer-events-none">
+            <h2 class="text-3xl text-white font-bold tracking-widest mb-2">SYSTEM UNDER ATTACK</h2>
+            <p class="text-blue-400 font-mono text-sm">TYPE THE WORDS TO NEUTRALIZE THREATS</p>
+        </div>
+        
+        <div class="absolute top-10 right-10 text-right font-mono">
+            <div class="text-white text-xl">SCORE: <span id="game-score" class="text-green-500">0</span></div>
+            <div class="text-white text-sm">INTEGRITY: <span id="game-health" class="text-green-500">100%</span></div>
+        </div>
+
+        <div id="game-area" class="w-full h-full relative"></div>
+
+        <div id="game-over-screen" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center hidden z-50">
+            <h2 class="text-5xl text-red-500 font-bold mb-4">SYSTEM COMPROMISED</h2>
+            <p class="text-white font-mono mb-8">FINAL SCORE: <span id="final-score">0</span></p>
+            <button id="restart-game-btn" class="px-8 py-3 bg-white text-black font-bold tracking-widest hover:bg-gray-200 transition-colors rounded">REBOOT SYSTEM</button>
+            <button id="close-game-btn" class="mt-4 text-neutral-500 hover:text-white text-sm underline">EXIT TO DESKTOP</button>
+        </div>
+        
+        <button id="quit-game-btn" class="absolute top-10 left-10 text-neutral-500 hover:text-white z-50">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
     </div>
 </body>
 </html>
